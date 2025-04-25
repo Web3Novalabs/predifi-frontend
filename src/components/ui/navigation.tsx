@@ -147,7 +147,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         {/* Create Pool Button */}
         <div className="px-4 mb-8">
           <Link
-            href="/create-pool"
+            href="/dashboard/create-pool"
             className={`flex items-center bg-teal-600 text-black rounded-md h-10 hover:bg-teal-500 transition-colors ${
               isCollapsed ? "justify-center" : ""
             }`}
