@@ -50,21 +50,41 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       icon: <LayoutDashboard size={20} />,
       path: "/dashboard",
     },
-    { name: "Pool Market", icon: <Eclipse size={20} />, path: "/pool-market" },
-    { name: "Live Market", icon: <Radio size={20} />, path: "/live-market" },
-    { name: "Validator", icon: <TicketCheck size={20} />, path: "/validator" },
-    { name: "My Profile", icon: <UserRoundCog size={20} />, path: "/profile" },
-    { name: "Wallet Token", icon: <Wallet size={20} />, path: "/wallet" },
+    {
+      name: "Pool Market",
+      icon: <Eclipse size={20} />,
+      path: "/dashboard/pool-market",
+    },
+    {
+      name: "Live Market",
+      icon: <Radio size={20} />,
+      path: "/dashboard/live-market",
+    },
+    {
+      name: "Validator",
+      icon: <TicketCheck size={20} />,
+      path: "/dashboard/validator",
+    },
+    {
+      name: "My Profile",
+      icon: <UserRoundCog size={20} />,
+      path: "/dashboard/profile",
+    },
+    {
+      name: "Wallet Token",
+      icon: <Wallet size={20} />,
+      path: "/dashboard/wallet",
+    },
     {
       name: "Settings",
       icon: <Settings size={20} />,
-      path: "/settings",
+      path: "/dashboard/settings",
       bottomSection: true,
     },
     {
       name: "Docs",
       icon: <FileText size={20} />,
-      path: "/docs",
+      path: "/dashboard",
       bottomSection: true,
       external: true,
     },
@@ -274,10 +294,10 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   );
 };
 
-const Navigation = ({ className = "" }) => {
+const Navigation: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
-    <div className={className}>
-      <Layout>{null}</Layout>
+    <div>
+      <Layout >{children}</Layout>
     </div>
   );
 };
