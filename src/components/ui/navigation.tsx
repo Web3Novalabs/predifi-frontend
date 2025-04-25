@@ -275,7 +275,11 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 };
 
 const Navigation = ({ className = "" }) => {
-  return <Layout>{null}</Layout>;
+  return (
+    <div className={className}>
+      <Layout>{null}</Layout>
+    </div>
+  );
 };
 
 export default Navigation;

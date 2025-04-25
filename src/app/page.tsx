@@ -3,8 +3,7 @@ import Navigation from "@/components/ui/navigation";
 export default function Home() {
   return (
     <div className="relative">
-      {/* Sidebar */}
-      <Navigation />
+      <Navigation className="custom class"/>
 
       {/* Main Content */}
       <div className="absolute top-0 left-0 right-0 bottom-0 p-10 z-10">
