@@ -1,26 +1,12 @@
 "use client";
 import { useState } from "react";
-import { CopyIcon, ExternalLink, Check } from "lucide-react";
-
-import type { PoolFormData } from "@/lib/types";
+import { CopyIcon, Check, Info } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { usePoolCreation } from "@/contexts/pool-creation-context";
+import Image from "next/image";
 
-interface PreviewPanelProps {
-  formData: PoolFormData;
-  currentStep: number;
-  onNext: () => void;
-  onBack: () => void;
-  isComplete: boolean;
-}
-
-export default function PreviewPanel({
-  formData,
-  currentStep,
-  onNext,
-  onBack,
-  isComplete,
-}: PreviewPanelProps) {
+export default function PreviewPanel() {
+  const { formData, currentStep, nextStep, prevStep } = usePoolCreation();
   const [copied, setCopied] = useState(false);
 
   const copyToClipboard = (text: string) => {
@@ -53,12 +39,12 @@ export default function PreviewPanel({
       <h2 className="text-xl font-bold text-center mb-6">PREVIEW</h2>
 
       <div className="border-t border-gray-800 pt-6 flex-1">
-        <div className="space-y-6 flex-1">
+        <div className="space-y-3 flex-1">
           <div className="bg-[#0E0E10] p-4 rounded-lg mt-2 space-y-6">
             <div className="flex items-start gap-4">
               <div className="w-16 h-16 bg-gray-800 rounded-lg overflow-hidden flex-shrink-0">
                 {formData.image ? (
-                  <img
+                  <Image
                     src={
                       URL.createObjectURL(formData.image) || "/placeholder.svg"
                     }
@@ -105,139 +91,132 @@ export default function PreviewPanel({
           </div>
 
           {/* Step 2 Content */}
-          {currentStep >= 2 && (
-            <div className="bg-[#0E0E10] p-4 rounded-lg">
-              {formData.options.length > 0 &&
-                formData.options.some((option) => option) && (
-                  <div>
-                    {formData.options.map((option, index) => {
-                      if (!option) return null;
-                      return (
-                        <div
-                          key={index}
-                          className="flex justify-between items-center py-1 text-sm"
-                        >
-                          <span className="text-sm text-gray-400">
-                            Option {index + 1}
-                          </span>
-                          <span className="font-medium">{option}</span>
-                        </div>
-                      );
-                    })}
+
+          <div className="bg-[#0E0E10] p-4 rounded-lg">
+            {formData.minBetAmount && (
+              <div className="flex justify-between items-center py-1 text-sm">
+                <span className="text-sm text-gray-400">
+                  Minimum bet amount
+                </span>
+                <span className="font-medium">
+                  {formData.minBetAmount} strk
+                </span>
+              </div>
+            )}
+
+            {formData.maxBetAmount && (
+              <div className="flex justify-between items-center py-1 text-sm">
+                <span className="text-sm text-gray-400">
+                  Maximum bet amount
+                </span>
+                <span className="font-medium">
+                  {formData.maxBetAmount} strk
+                </span>
+              </div>
+            )}
+
+            {(formData.lockDate || formData.endDate) && (
+              <>
+                {formData.lockDate && (
+                  <div className="flex justify-between items-center py-1 text-sm">
+                    <span className="text-sm text-gray-400">Start date</span>
+                    <span className="font-medium">{formData.lockDate}</span>
                   </div>
                 )}
 
-              {formData.categories.length > 0 && (
-                <div className="flex justify-between items-center py-1 text-sm">
-                  <span className="text-sm text-gray-400">Categories</span>
-                  <div className="flex flex-wrap gap-1 justify-end">
-                    {formData.categories.map((category) => (
-                      <Badge
-                        key={category}
-                        className="bg-gray-800 text-xs font-normal hover:bg-gray-700"
-                      >
-                        {category}
-                      </Badge>
-                    ))}
+                {formData.endDate && (
+                  <div className="flex justify-between items-center py-1 text-sm">
+                    <span className="text-sm text-gray-400">End Date</span>
+                    <span className="font-medium">{formData.endDate}</span>
                   </div>
+                )}
+              </>
+            )}
+
+            {formData.categories.length > 0 && (
+              <div className="flex justify-between items-center py-1 text-sm">
+                <span className="text-sm text-gray-400">Categories</span>
+                <div className="flex flex-wrap gap-1 justify-end">
+                  {formData.categories.map((category) => (
+                    <Badge
+                      key={category}
+                      className="bg-gray-800 text-xs font-normal hover:bg-gray-700"
+                    >
+                      {category}
+                    </Badge>
+                  ))}
                 </div>
-              )}
-
-              {(formData.lockDate || formData.endDate) && (
-                <>
-                  {formData.lockDate && (
-                    <div className="flex justify-between items-center py-1 text-sm">
-                      <span className="text-sm text-gray-400">Start date</span>
-                      <span className="font-medium">{formData.lockDate}</span>
-                    </div>
-                  )}
-
-                  {formData.endDate && (
-                    <div className="flex justify-between items-center py-1 text-sm">
-                      <span className="text-sm text-gray-400">End Date</span>
-                      <span className="font-medium">{formData.endDate}</span>
-                    </div>
-                  )}
-                </>
-              )}
-            </div>
-          )}
+              </div>
+            )}
+          </div>
 
           {/* Step 3 Content */}
-          {currentStep >= 3 && (
-            <div className="bg-[#0E0E10] p-4 rounded-lg mt-2">
-              {formData.privacy && (
-                <div className="flex justify-between items-center py-1 text-sm">
-                  <span className="text-sm text-gray-400">Privacy</span>
-                  <Badge className="bg-indigo-900/50 text-indigo-300 hover:bg-indigo-900/70">
-                    {formData.privacy === "public" ? "Public" : "Private"}
-                  </Badge>
+          <div className="bg-[#0E0E10] p-4 rounded-lg mt-2">
+            {formData.privacy && (
+              <div className="flex justify-between items-center py-1 text-sm">
+                <span className="text-sm text-gray-400">Privacy</span>
+                <div className="bg-gray-800 text-white hover:bg-gray-900 px-2 py-1 rounded">
+                  {formData.privacy === "public" ? "Public" : "Private"}
                 </div>
-              )}
-
-              {formData.minBetAmount && (
-                <div className="flex justify-between items-center py-1 text-sm">
-                  <span className="text-sm text-gray-400">
-                    Minimum bet amount
-                  </span>
-                  <span className="font-medium">
-                    {formData.minBetAmount} strk
-                  </span>
-                </div>
-              )}
-
-              {formData.maxBetAmount && (
-                <div className="flex justify-between items-center py-1 text-sm">
-                  <span className="text-sm text-gray-400">
-                    Maximum bet amount
-                  </span>
-                  <span className="font-medium">
-                    {formData.maxBetAmount} strk
-                  </span>
-                </div>
-              )}
-
-              {formData.creatorFee && (
-                <div className="flex justify-between items-center py-1 text-sm">
-                  <span className="text-sm text-gray-400">Creator fee</span>
-                  <span className="font-medium">{formData.creatorFee}%</span>
-                </div>
-              )}
-            </div>
-          )}
-
-          {!isComplete && (
-            <>
-              <div className="flex justify-between pt-4">
-                <button
-                  className="px-6 py-2 rounded-md border border-gray-700 text-gray-300 hover:bg-gray-800 transition-colors"
-                  onClick={currentStep > 1 ? onBack : undefined}
-                  disabled={currentStep === 1}
-                  style={{ opacity: currentStep === 1 ? 0.5 : 1 }}
-                >
-                  {currentStep === 1 ? "Cancel" : "Back"}
-                </button>
-                <button
-                  className="px-6 py-2 rounded-md bg-teal-500 text-black font-medium hover:bg-teal-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                  onClick={onNext}
-                  disabled={isNextDisabled()}
-                >
-                  {currentStep < 3 ? "Continue" : "Proceed"}
-                </button>
               </div>
-              {currentStep === 3 && (
-                <div className="flex items-center gap-2 text-amber-500 text-sm">
-                  <span className="w-5 h-5 rounded-full border border-amber-500 flex items-center justify-center text-xs">
-                    !
-                  </span>
-                  <p>
-                    Pool creation costs 1 STRK. Make sure you have enough in
-                    your wallet.
-                  </p>
+            )}
+
+            {formData.options.length > 0 &&
+              formData.options.some((option) => option) && (
+                <div>
+                  {formData.options.map((option, index) => {
+                    if (!option) return null;
+                    return (
+                      <div
+                        key={index}
+                        className="flex justify-between items-center py-1 text-sm"
+                      >
+                        <span className="text-sm text-gray-400">
+                          Option {index + 1}
+                        </span>
+                        <span className="font-medium">{option}</span>
+                      </div>
+                    );
+                  })}
                 </div>
               )}
-            </>
-          )}
+
+            {formData.creatorFee && (
+              <div className="flex justify-between items-center py-1 text-sm">
+                <span className="text-sm text-gray-400">Creator fee</span>
+                <span className="font-medium">{formData.creatorFee}%</span>
+              </div>
+            )}
+          </div>
+
+          <>
+            <div className="flex justify-between pt-2 gap-5">
+              <button
+                className="px-6 py-2 rounded-md border border-gray-700 text-gray-300 hover:bg-gray-800 transition-colors w-full"
+                onClick={currentStep > 1 ? prevStep : undefined}
+                disabled={currentStep === 1}
+                style={{ opacity: currentStep === 1 ? 0.5 : 1 }}
+              >
+                {currentStep === 1 ? "Cancel" : "Back"}
+              </button>
+              <button
+                className="px-6 py-2 rounded-md bg-teal-500 text-black font-medium hover:bg-teal-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed w-full"
+                onClick={nextStep}
+                disabled={isNextDisabled()}
+              >
+                {currentStep < 3 ? "Continue" : "Proceed"}
+              </button>
+            </div>
+          </>
+
+          <div className=" flex items-center justify-center gap-2 text-sm">
+            <Info className="text-[#FFC66B] h-5 w-5" />
+            <span className="text-xs text-gray-400">
+              Pool creation costs
+              <span className="font-bold text-white"> 1 STRK.</span> Make sure
+              you have enough in your wallet
+            </span>
+          </div>
         </div>
       </div>
     </div>

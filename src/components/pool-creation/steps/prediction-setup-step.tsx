@@ -6,17 +6,10 @@ import { ChevronDown, Plus, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import type { PoolFormData } from "@/lib/types";
+import { usePoolCreation } from "@/contexts/pool-creation-context";
 
-interface PredictionSetupStepProps {
-  formData: PoolFormData;
-  updateFormData: (data: Partial<PoolFormData>) => void;
-}
-
-export default function PredictionSetupStep({
-  formData,
-  updateFormData,
-}: PredictionSetupStepProps) {
+export default function PredictionSetupStep() {
+  const { formData, updateFormData } = usePoolCreation();
   const [showCategoriesDropdown, setShowCategoriesDropdown] = useState(false);
   const availableCategories = [
     "Crypto",
@@ -99,26 +92,6 @@ export default function PredictionSetupStep({
           <label className="block text-sm font-medium mb-2">Categories</label>
           <div className="relative">
             <div
-              className="flex items-center flex-wrap gap-2 mb-2"
-              onClick={() => setShowCategoriesDropdown(false)}
-            >
-              {formData.categories.map((category) => (
-                <Badge
-                  key={category}
-                  className="bg-gray-800 text-xs font-normal hover:bg-gray-700 flex items-center gap-1"
-                >
-                  {category}
-                  <X
-                    className="w-3 h-3 cursor-pointer"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      removeCategory(category);
-                    }}
-                  />
-                </Badge>
-              ))}
-            </div>
-            <div
               className="flex items-center cursor-pointer"
               onClick={() => setShowCategoriesDropdown(!showCategoriesDropdown)}
             >
@@ -151,6 +124,26 @@ export default function PredictionSetupStep({
               </div>
             )}
           </div>
+          <div
+            className="flex items-center flex-wrap gap-2 mt-2"
+            onClick={() => setShowCategoriesDropdown(false)}
+          >
+            {formData.categories.map((category) => (
+              <Badge
+                key={category}
+                className="bg-gray-800 text-xs font-normal hover:bg-gray-700 flex items-center gap-1"
+              >
+                {category}
+                <X
+                  className="w-3 h-3 cursor-pointer"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    removeCategory(category);
+                  }}
+                />
+              </Badge>
+            ))}
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -170,11 +163,11 @@ export default function PredictionSetupStep({
 
           <div>
             <label className="block text-sm font-medium mb-2">End Date</label>
-            <div className="relative">
+            <div className="relative w-full">
               <Input
                 placeholder="Select a date"
                 type="date"
-                className="bg-transparent border-gray-700 focus:border-teal-500 pr-10"
+                className="bg-transparent border-gray-700 focus:border-teal-500 pr-10 w-full"
                 value={formData.endDate}
                 onChange={(e) => updateFormData({ endDate: e.target.value })}
               />

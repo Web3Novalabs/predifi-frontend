@@ -3,18 +3,10 @@
 import { motion } from "framer-motion";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import type { PoolFormData } from "@/lib/types";
-import { Plus } from "lucide-react";
+import { usePoolCreation } from "@/contexts/pool-creation-context";
 
-interface BetRulesStepProps {
-  formData: PoolFormData;
-  updateFormData: (data: Partial<PoolFormData>) => void;
-}
-
-export default function BetRulesStep({
-  formData,
-  updateFormData,
-}: BetRulesStepProps) {
+export default function BetRulesStep() {
+  const { formData, updateFormData } = usePoolCreation();
   const feeOptions = ["0", "0.5", "1", "2", "5"];
 
   return (
@@ -84,7 +76,7 @@ export default function BetRulesStep({
           </div>
 
           <p className="text-sm text-white italic mt-5">
-            You&apos;ll earn X% from total staked
+            You&apos;ll earn {formData.creatorFee}% from total staked
           </p>
         </div>
 
@@ -95,8 +87,8 @@ export default function BetRulesStep({
               variant={formData.privacy === "public" ? "default" : "outline"}
               className={
                 formData.privacy === "public"
-                  ? "rounded-r-none bg-teal-500 hover:bg-teal-600 text-black py-6 text-white"
-                  : "rounded-r-none border-gray-700 text-gray-400 hover:bg-gray-800 bg-transparent py-6 text-white"
+                  ? "rounded-r-none bg-teal-500 hover:bg-teal-600 py-6 text-white border border-teal-500"
+                  : "rounded-r-none border-gray-700 hover:bg-gray-800 bg-transparent py-6 text-white border"
               }
               onClick={() => updateFormData({ privacy: "public" })}
             >
@@ -106,8 +98,8 @@ export default function BetRulesStep({
               variant={formData.privacy === "private" ? "default" : "outline"}
               className={
                 formData.privacy === "private"
-                  ? "rounded-l-none bg-teal-500 hover:bg-teal-600 py-6 text-white"
-                  : "rounded-l-none border-gray-700 hover:bg-gray-800 bg-transparent py-6 text-white"
+                  ? "rounded-l-none bg-teal-500 hover:bg-teal-600 py-6 text-white border border-teal-500"
+                  : "rounded-l-none border-gray-700 hover:bg-gray-800 bg-transparent py-6 text-white border"
               }
               onClick={() => updateFormData({ privacy: "private" })}
             >

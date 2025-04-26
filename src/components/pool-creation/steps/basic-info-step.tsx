@@ -4,20 +4,14 @@ import type React from "react";
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Upload, UploadCloud } from "lucide-react";
+import { UploadCloud } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import type { PoolFormData } from "@/lib/types";
+import { usePoolCreation } from "@/contexts/pool-creation-context";
+import Image from "next/image";
 
-interface BasicInfoStepProps {
-  formData: PoolFormData;
-  updateFormData: (data: Partial<PoolFormData>) => void;
-}
-
-export default function BasicInfoStep({
-  formData,
-  updateFormData,
-}: BasicInfoStepProps) {
+export default function BasicInfoStep() {
+  const { formData, updateFormData } = usePoolCreation();
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -55,7 +49,7 @@ export default function BasicInfoStep({
               onClick={() => document.getElementById("image-upload")?.click()}
             >
               {imagePreview ? (
-                <img
+                <Image
                   src={imagePreview || "/placeholder.svg"}
                   alt="Preview"
                   className="w-full h-full object-cover"
