@@ -45,6 +45,8 @@ export default function PreviewPanel() {
               <div className="w-16 h-16 bg-gray-800 rounded-lg overflow-hidden flex-shrink-0">
                 {formData.image ? (
                   <Image
+                    height={500}
+                    width={500}
                     src={
                       URL.createObjectURL(formData.image) || "/placeholder.svg"
                     }

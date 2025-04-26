@@ -50,6 +50,8 @@ export default function BasicInfoStep() {
             >
               {imagePreview ? (
                 <Image
+                  height={500}
+                  width={500}
                   src={imagePreview || "/placeholder.svg"}
                   alt="Preview"
                   className="w-full h-full object-cover"
