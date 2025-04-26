@@ -1,3 +1,5 @@
+import PoolForm from "@/components/pool-creation/pool-form";
+
 export default function CreatePool() {
-  return <h2>create a pool</h2>;
+  return <PoolForm />;
 }
