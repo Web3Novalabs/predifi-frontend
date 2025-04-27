@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { PlusIcon, ArrowUpRight } from "lucide-react";
 import SummaryCard from "@/components/dashboard/wallet/summary-card";
+import TransactionSummary from "@/components/dashboard/wallet/transaction-summary";
 
 // TODO: remove sample data when API is ready
 const summaryCardData = [
@@ -16,6 +17,30 @@ const summaryCardData = [
     title: "Claimable Token",
     amount: "$1,205",
   }
+]
+
+const transactionHistory = [
+  {
+    date: "2h 38secs",
+    action: "Yes",
+    poolName: "Will BTC reach $50K by June?",
+    amountStaked: "$4.50",
+    status: "active",
+  },
+  {
+    date: "3h 12mins",
+    action: "No",
+    poolName: "Will DOGE reach $1 by March?",
+    amountStaked: "$10.50",
+    status: "active",
+  },
+  {
+    date: "6h 12mins",
+    action: "Yes",
+    poolName: "How many ETH will be staked by 2024?",
+    amountStaked: "$2.50",
+    status: "active",
+  },
 ]
 
 export default function Wallet() {
@@ -52,6 +77,10 @@ export default function Wallet() {
             <SummaryCard key={index} title={card.title} amount={card.amount} />
           ))}
         </div>
+      </section>
+
+      <section>
+        <TransactionSummary data={transactionHistory} />
       </section>
     </div>
   )
