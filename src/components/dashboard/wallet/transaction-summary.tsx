@@ -16,7 +16,16 @@ type Props = {
   data: TransactionHistory[]
 }
 
+
+// function splits camel case strings into separate words
+const splitByCamelCase = (str: string) => {
+  return str.replace(/([a-z])([A-Z])/g, "$1 $2")
+}
+
 function TransactionSummary({ data }: Props) {
+  // obtain table headers from the first object in the data array
+  const tableHeader = Object.keys(data?.[0] || {})
+
   const [setsearchQuery, setSetsearchQuery] = useState("")
   // perform a freontend filtering of the history data with the search query
   const renderedHistory = data.filter((history) => {
@@ -45,11 +54,9 @@ function TransactionSummary({ data }: Props) {
         <Table>
           <TableHeader>
             <TableRow className="hover:bg-transparent border-[#515461]/80 uppercase">
-              <TableHead className="text-white/60 px-2.5">Date</TableHead>
-              <TableHead className="text-white/60 px-2.5">Action</TableHead>
-              <TableHead className="text-white/60 px-2.5">Pool name</TableHead>
-              <TableHead className="text-white/60 px-2.5">Amount staked</TableHead>
-              <TableHead className="text-white/60 px-2.5">Status</TableHead>
+              {tableHeader.map((header, i) => <TableHead key={i} className="text-white/60 px-2.5">
+                {splitByCamelCase(header)}
+              </TableHead>)}
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -57,14 +64,19 @@ function TransactionSummary({ data }: Props) {
               <TableRow
                 key={index}
                 className="border-[#515461]/50 hover:bg-[#515461]/20 transition-colors">
-                <TableCell className="font-medium px-2.5 py-6">{invoice.date}</TableCell>
-                <TableCell className="px-2.5 py-6">{invoice.action}</TableCell>
-                <TableCell className="px-2.5 py-6">{invoice.poolName}</TableCell>
-                <TableCell className="px-2.5 py-6">{invoice.amountStaked}</TableCell>
-                <TableCell className="px-2.5 py-6">{invoice.status}</TableCell>
+                {tableHeader.map((header, i) => (
+                  <TableCell key={i} className="px-2.5 py-6">{invoice?.[header as keyof TransactionHistory]}</TableCell>
+                ))}
               </TableRow>
             ))}
-            {/* implement enpty state consider search query */}
+            {/* empty states */}
+            {renderedHistory.length === 0 && (
+              <TableRow className="border-[#515461]/50 hover:bg-transparent">
+                <TableCell colSpan={tableHeader.length} className="text-center py-6 text-white/60">
+                  No transaction history found
+                </TableCell>
+              </TableRow>
+            )}
           </TableBody>
         </Table>
       </div>
