@@ -2,6 +2,8 @@
 import CopyToClipboard from "@/components/dashboard/copy-to-clipboard";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import ThemeSelect from "@/components/dashboard/settings/theme-select";
+import TokenPreference from "@/components/dashboard/settings/token-preference";
 import {
   Select,
   SelectContent,
@@ -12,7 +14,6 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Switch } from "@/components/ui/switch"
-import { Moon, SunMoonIcon } from "lucide-react"
 import { useState } from "react";
 
 export default function Settings() {
@@ -137,63 +138,6 @@ export default function Settings() {
           </div>
         </div>
       </section>
-    </div>
-  )
-}
-
-type ThemeSelectProps = {
-  value: string
-  onChange: (value: string) => void
-}
-const ThemeSelect = ({ value, onChange }: ThemeSelectProps) => {
-  const themes = [
-    {
-      value: "dark",
-      icon: Moon,
-    },
-    {
-      value: "light",
-      icon: SunMoonIcon,
-    },
-  ]
-  return (
-    <div className="flex items-center gap-x-2">
-      {themes.map((theme) => (
-        <button
-          key={theme.value}
-          className={`flex gap-2 px-2.5 py-1 rounded-md hover:bg-[#1F2024]
-          transition-all duration-200 ease-in-out cursor-pointer
-          ${value === theme.value ? "bg-[#1F2024]" : "text-white/40"}`}
-          onClick={() => onChange(theme.value)}
-        >
-          {<theme.icon className={`w-6 ${value === theme.value && "text-[#259BA5]"}`} />}
-          {theme.value}
-        </button>
-      ))}
-    </div>
-  )
-}
-
-type TokenPreferenceProps = {
-  value: string
-  options: string[]
-  onChange: (value: string) => void
-}
-const TokenPreference = ({ value, options, onChange }: TokenPreferenceProps) => {
-  return (
-    <div className="flex items-center gap-x-2">
-      {options.map((option) => (
-        <button
-          key={option}
-          className={`flex gap-2 px-2.5 py-4 rounded-md hover:bg-[#1F2024]
-          border border-[#515461] text-white font-medium text-sm
-          transition-all duration-200 ease-in-out cursor-pointer
-          ${value === option && "bg-[#259BA5] hover:bg-[#259BA5]/80 !text-black" }`}
-          onClick={() => onChange(option)}
-        >
-          {option}
-        </button>
-      ))}
     </div>
   )
 }
