@@ -40,13 +40,13 @@ function TransactionSummary({ data }: Props) {
 
   return (
     <div>
-      <div className="flex max-md:flex-col gap-4 justify-between px-2.5 py-6.5">
+      <div className="flex max-md:flex-col gap-4 justify-between md:items-center px-2.5 py-6.5">
         <h3 className="text-lg font-semibold">Token History</h3>
-        <div className="flex gap-2.5 items-center">
+        <div className="max-md:flex-1 flex gap-2.5 items-center">
           <button>
             <ListFilterPlus className="w-6 text-white" />
           </button>
-          <Search onChange={(query) => setSetsearchQuery(query as string)} />
+          <Search className="flex-1" onChange={(query) => setSetsearchQuery(query as string)} />
         </div>
       </div>
 
