@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import Image from "next/image";
-import React, { useState, useEffect } from "react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import Image from 'next/image';
+import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 // Icons
 import {
@@ -19,11 +19,11 @@ import {
   DiamondPlus,
   UserRoundCog,
   BellDot,
-} from "lucide-react";
+} from 'lucide-react';
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState('');
   const [isMobile, setIsMobile] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const pathname = usePathname();
@@ -37,8 +37,8 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     };
 
     handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   const toggleSidebar = () => setIsCollapsed(!isCollapsed);
@@ -46,45 +46,45 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
   const menuItems = [
     {
-      name: "Dashboard",
+      name: 'Dashboard',
       icon: <LayoutDashboard size={20} />,
-      path: "/dashboard",
+      path: '/dashboard',
     },
     {
-      name: "Pool Market",
+      name: 'Pool Market',
       icon: <Eclipse size={20} />,
-      path: "/dashboard/pool-market",
+      path: '/dashboard/pool-market',
     },
     {
-      name: "Live Market",
+      name: 'Live Market',
       icon: <Radio size={20} />,
-      path: "/dashboard/live-market",
+      path: '/dashboard/live-market',
     },
     {
-      name: "Validator",
+      name: 'Validator',
       icon: <TicketCheck size={20} />,
-      path: "/dashboard/validator",
+      path: '/dashboard/validator',
     },
     {
-      name: "My Profile",
+      name: 'My Profile',
       icon: <UserRoundCog size={20} />,
-      path: "/dashboard/profile",
+      path: '/dashboard/profile',
     },
     {
-      name: "Wallet Token",
+      name: 'Wallet Token',
       icon: <Wallet size={20} />,
-      path: "/dashboard/wallet",
+      path: '/dashboard/wallet',
     },
     {
-      name: "Settings",
+      name: 'Settings',
       icon: <Settings size={20} />,
-      path: "/dashboard/settings",
+      path: '/dashboard/settings',
       bottomSection: true,
     },
     {
-      name: "Docs",
+      name: 'Docs',
       icon: <FileText size={20} />,
-      path: "/dashboard",
+      path: '/dashboard',
       bottomSection: true,
       external: true,
     },
@@ -94,14 +94,14 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const bottomMenuItems = menuItems.filter((item) => item.bottomSection);
 
   return (
-    <div className="flex h-screen w-full">
+    <div className="flex h-screen w-full ">
       {/* Sidebar */}
       <div
-        className={`flex flex-col bg-black text-gray-600 h-screen transition-all duration-300 z-30
-          ${isCollapsed ? "w-20" : "w-60"}
-          ${isMobile ? "fixed left-0 top-0 h-screen" : "relative"}
+        className={`flex flex-col bg-black text-gray-600 h-screen transition-all duration-300 z-30 border border-gray-800
+          ${isCollapsed ? 'w-20' : 'w-60'}
+          ${isMobile ? 'fixed left-0 top-0 h-screen' : 'relative'}
           ${
-            isMobile && !mobileMenuOpen ? "-translate-x-full" : "translate-x-0"
+            isMobile && !mobileMenuOpen ? '-translate-x-full' : 'translate-x-0'
           }`}
       >
         {!isMobile && (
@@ -112,7 +112,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             <button
               onClick={toggleSidebar}
               className="text-white rounded-md w-8 h-8 flex items-center justify-center"
-              aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+              aria-label={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
             >
               <Menu size={20} />
             </button>
@@ -149,7 +149,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           <Link
             href="/dashboard/create-pool"
             className={`flex items-center bg-teal-600 text-black rounded-md h-10 hover:bg-teal-500 transition-colors ${
-              isCollapsed ? "justify-center" : ""
+              isCollapsed ? 'justify-center' : ''
             }`}
           >
             <div className="flex items-center justify-center w-10 h-10">
@@ -172,15 +172,15 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                     href={item.path}
                     className={`flex items-center h-10 rounded-md transition-colors ${
                       isActive
-                        ? "bg-gray-800 text-teal-400"
-                        : "hover:bg-gray-800 hover:text-teal-600"
+                        ? 'bg-gray-800 text-teal-400'
+                        : 'hover:bg-gray-800 hover:text-teal-600'
                     }`}
-                    aria-current={isActive ? "page" : undefined}
+                    aria-current={isActive ? 'page' : undefined}
                     onClick={isMobile ? toggleMobileMenu : undefined}
                   >
                     <div
                       className={`flex items-center justify-center w-10 h-10 ${
-                        isCollapsed ? "mx-auto" : ""
+                        isCollapsed ? 'mx-auto' : ''
                       }`}
                     >
                       {item.icon}
@@ -207,7 +207,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                   >
                     <div
                       className={`flex items-center justify-center w-10 h-10 ${
-                        isCollapsed ? "mx-auto" : ""
+                        isCollapsed ? 'mx-auto' : ''
                       }`}
                     >
                       {item.icon}
@@ -219,15 +219,15 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                     href={item.path}
                     className={`flex items-center h-10 rounded-md transition-colors ${
                       pathname === item.path
-                        ? "bg-gray-800 text-teal-400"
-                        : "hover:bg-gray-800 hover:text-white"
+                        ? 'bg-gray-800 text-teal-400'
+                        : 'hover:bg-gray-800 hover:text-white'
                     }`}
-                    aria-current={pathname === item.path ? "page" : undefined}
+                    aria-current={pathname === item.path ? 'page' : undefined}
                     onClick={isMobile ? toggleMobileMenu : undefined}
                   >
                     <div
                       className={`flex items-center justify-center w-10 h-10 ${
-                        isCollapsed ? "mx-auto" : ""
+                        isCollapsed ? 'mx-auto' : ''
                       }`}
                     >
                       {item.icon}
@@ -242,9 +242,9 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       </div>
 
       {/* Main area (Navbar + Page content) */}
-      <div className="flex flex-col flex-1 overflow-hidden">
+      <div className="flex flex-col flex-1 overflow-hidden border-y border-gray-800">
         {/* Navbar */}
-        <div className="flex items-center justify-between w-full bg-black px-4 py-3 ">
+        <div className="flex items-center justify-between w-full bg-black px-4 py-3 border-b border-gray-800">
           <div className="flex items-center">
             {/* Logo */}
             <Link href="/dashboard" className="flex items-center">
@@ -297,7 +297,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 const Navigation: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
     <div>
-      <Layout >{children}</Layout>
+      <Layout>{children}</Layout>
     </div>
   );
 };
