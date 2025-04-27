@@ -12,3 +12,11 @@ export interface PoolFormData {
   creatorFee: string;
   privacy: "public" | "private";
 }
+
+export type TransactionHistory = {
+  date: string
+  action: string
+  poolName: string
+  amountStaked: string
+  status: string
+}
