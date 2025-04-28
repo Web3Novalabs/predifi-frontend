@@ -8,7 +8,7 @@ export default function DashboardLayout({
   return (
     <div className="relative">
       <Navigation>
-        <div className="bsolute top-0 left-0 right-0 bottom-0 p-10 z-10">
+        <div className="bsolute top-0 left-0 right-0 bottom-0 p-5 z-10 bg-[#09090B]">
           {children}
         </div>
       </Navigation>
