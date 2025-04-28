@@ -1,155 +1,155 @@
 // app/dashboard/pool-market/page.tsx
-"use client";
+'use client';
 
-import React, { useState } from "react";
-import PoolCard from "./PoolCard";
-import { ListCollapse } from "lucide-react";
+import React, { useState } from 'react';
+import PoolCard from './PoolCard';
+import { ListCollapse } from 'lucide-react';
 
 // Mock data for the pools
 const mockPools = [
   {
     id: 1,
-    title: "Best AI this month...",
+    title: 'Best AI this month...',
     description:
-      "Crowdsourced AI experts forecasting market outcome predictions based on which model will perform...",
-    poolAmount: "$1045",
-    poolDuration: "10D",
-    tokenAmount: "10k",
-    predictedAmount: "16k",
-    option1: "Option 1",
-    option1Percentage: "9.54",
-    option2: "Option 2",
-    option2Percentage: "1.47",
-    category: "crypto",
+      'Crowdsourced AI experts forecasting market outcome predictions based on which model will perform...',
+    poolAmount: '$1045',
+    poolDuration: '10D',
+    tokenAmount: '10k',
+    predictedAmount: '16k',
+    option1: 'Option 1',
+    option1Percentage: '9.54',
+    option2: 'Option 2',
+    option2Percentage: '1.47',
+    category: 'crypto',
   },
   {
     id: 2,
-    title: "Best AI this month...",
+    title: 'Best AI this month...',
     description:
-      "Crowdsourced AI experts forecasting market outcome predictions based on which model will perform...",
-    poolAmount: "$1045",
-    poolDuration: "10D",
-    tokenAmount: "10k",
-    predictedAmount: "16k",
-    option1: "Option 1",
-    option1Percentage: "9.54",
-    option2: "Option 2",
-    option2Percentage: "1.47",
-    category: "sports",
+      'Crowdsourced AI experts forecasting market outcome predictions based on which model will perform...',
+    poolAmount: '$1045',
+    poolDuration: '10D',
+    tokenAmount: '10k',
+    predictedAmount: '16k',
+    option1: 'Option 1',
+    option1Percentage: '9.54',
+    option2: 'Option 2',
+    option2Percentage: '1.47',
+    category: 'sports',
   },
   {
     id: 3,
-    title: "Best AI this month...",
+    title: 'Best AI this month...',
     description:
-      "Crowdsourced AI experts forecasting market outcome predictions based on which model will perform...",
-    poolAmount: "$1249",
-    poolDuration: "10D",
-    tokenAmount: "10k",
-    predictedAmount: "16k",
-    option1: "Option 1",
-    option1Percentage: "9.54",
-    option2: "Option 2",
-    option2Percentage: "1.67",
-    category: "culture",
+      'Crowdsourced AI experts forecasting market outcome predictions based on which model will perform...',
+    poolAmount: '$1249',
+    poolDuration: '10D',
+    tokenAmount: '10k',
+    predictedAmount: '16k',
+    option1: 'Option 1',
+    option1Percentage: '9.54',
+    option2: 'Option 2',
+    option2Percentage: '1.67',
+    category: 'culture',
   },
   {
     id: 4,
-    title: "Best AI this month...",
+    title: 'Best AI this month...',
     description:
-      "Crowdsourced AI experts forecasting market outcome predictions based on which model will perform...",
-    poolAmount: "$1045",
-    poolDuration: "10D",
-    tokenAmount: "10k",
-    predictedAmount: "16k",
-    option1: "Option 1",
-    option1Percentage: "9.54",
-    option2: "Option 2",
-    option2Percentage: "1.47",
-    category: "politics",
+      'Crowdsourced AI experts forecasting market outcome predictions based on which model will perform...',
+    poolAmount: '$1045',
+    poolDuration: '10D',
+    tokenAmount: '10k',
+    predictedAmount: '16k',
+    option1: 'Option 1',
+    option1Percentage: '9.54',
+    option2: 'Option 2',
+    option2Percentage: '1.47',
+    category: 'politics',
   },
   {
     id: 5,
-    title: "Best AI this month...",
+    title: 'Best AI this month...',
     description:
-      "Crowdsourced AI experts forecasting market outcome predictions based on which model will perform...",
-    poolAmount: "$1045",
-    poolDuration: "10D",
-    tokenAmount: "10k",
-    predictedAmount: "16k",
-    option1: "Option 1",
-    option1Percentage: "9.54",
-    option2: "Option 2",
-    option2Percentage: "1.47",
-    category: "tech",
+      'Crowdsourced AI experts forecasting market outcome predictions based on which model will perform...',
+    poolAmount: '$1045',
+    poolDuration: '10D',
+    tokenAmount: '10k',
+    predictedAmount: '16k',
+    option1: 'Option 1',
+    option1Percentage: '9.54',
+    option2: 'Option 2',
+    option2Percentage: '1.47',
+    category: 'tech',
   },
   {
     id: 6,
-    title: "Best AI this month...",
+    title: 'Best AI this month...',
     description:
-      "Crowdsourced AI experts forecasting market outcome predictions based on which model will perform...",
-    poolAmount: "$1249",
-    poolDuration: "10D",
-    tokenAmount: "10k",
-    predictedAmount: "16k",
-    option1: "Option 1",
-    option1Percentage: "9.54",
-    option2: "Option 2",
-    option2Percentage: "1.67",
-    category: "finance",
+      'Crowdsourced AI experts forecasting market outcome predictions based on which model will perform...',
+    poolAmount: '$1249',
+    poolDuration: '10D',
+    tokenAmount: '10k',
+    predictedAmount: '16k',
+    option1: 'Option 1',
+    option1Percentage: '9.54',
+    option2: 'Option 2',
+    option2Percentage: '1.67',
+    category: 'finance',
   },
   {
     id: 7,
-    title: "Best AI this month...",
+    title: 'Best AI this month...',
     description:
-      "Crowdsourced AI experts forecasting market outcome predictions based on which model will perform...",
-    poolAmount: "$1045",
-    poolDuration: "10D",
-    tokenAmount: "10k",
-    predictedAmount: "16k",
-    option1: "Option 1",
-    option1Percentage: "9.54",
-    option2: "Option 2",
-    option2Percentage: "1.47",
-    category: "crypto",
+      'Crowdsourced AI experts forecasting market outcome predictions based on which model will perform...',
+    poolAmount: '$1045',
+    poolDuration: '10D',
+    tokenAmount: '10k',
+    predictedAmount: '16k',
+    option1: 'Option 1',
+    option1Percentage: '9.54',
+    option2: 'Option 2',
+    option2Percentage: '1.47',
+    category: 'crypto',
   },
   {
     id: 8,
-    title: "Best AI this month...",
+    title: 'Best AI this month...',
     description:
-      "Crowdsourced AI experts forecasting market outcome predictions based on which model will perform...",
-    poolAmount: "$1045",
-    poolDuration: "10D",
-    tokenAmount: "10k",
-    predictedAmount: "16k",
-    option1: "Option 1",
-    option1Percentage: "9.54",
-    option2: "Option 2",
-    option2Percentage: "1.47",
-    category: "sports",
+      'Crowdsourced AI experts forecasting market outcome predictions based on which model will perform...',
+    poolAmount: '$1045',
+    poolDuration: '10D',
+    tokenAmount: '10k',
+    predictedAmount: '16k',
+    option1: 'Option 1',
+    option1Percentage: '9.54',
+    option2: 'Option 2',
+    option2Percentage: '1.47',
+    category: 'sports',
   },
   {
     id: 9,
-    title: "Best AI this month...",
+    title: 'Best AI this month...',
     description:
-      "Crowdsourced AI experts forecasting market outcome predictions based on which model will perform...",
-    poolAmount: "$1249",
-    poolDuration: "10D",
-    tokenAmount: "10k",
-    predictedAmount: "16k",
-    option1: "Option 1",
-    option1Percentage: "9.54",
-    option2: "Option 2",
-    option2Percentage: "1.67",
-    category: "finance",
+      'Crowdsourced AI experts forecasting market outcome predictions based on which model will perform...',
+    poolAmount: '$1249',
+    poolDuration: '10D',
+    tokenAmount: '10k',
+    predictedAmount: '16k',
+    option1: 'Option 1',
+    option1Percentage: '9.54',
+    option2: 'Option 2',
+    option2Percentage: '1.67',
+    category: 'finance',
   },
 ];
 
 export default function Market() {
-  const [activeCategory, setActiveCategory] = useState("all");
+  const [activeCategory, setActiveCategory] = useState('all');
 
   // Filter pools based on active category
   const filteredPools =
-    activeCategory === "all"
+    activeCategory === 'all'
       ? mockPools
       : mockPools.filter((pool) => pool.category === activeCategory);
 
@@ -160,87 +160,87 @@ export default function Market() {
         <div className="flex space-x-2 items-center">
           <button
             className={`px-4 py-2 text-sm border-b-2 transition-colors duration-200 ${
-              activeCategory === "all"
-                ? "border-[#259BA6] text-[#259BA6]"
-                : "border-transparent text-gray-300 hover:text-[#259BA6] hover:border-[#259BA6]"
+              activeCategory === 'all'
+                ? 'border-[#259BA6] text-[#259BA6]'
+                : 'border-transparent text-gray-300 hover:text-[#259BA6] hover:border-[#259BA6]'
             }`}
-            onClick={() => setActiveCategory("all")}
+            onClick={() => setActiveCategory('all')}
           >
             All
           </button>
 
           <button
             className={`px-4 py-2 text-sm border-b-2 transition-colors duration-200 ${
-              activeCategory === "trending"
-                ? "border-[#259BA6] text-[#259BA6]"
-                : "border-transparent text-gray-300 hover:text-[#259BA6] hover:border-[#259BA6]"
+              activeCategory === 'trending'
+                ? 'border-[#259BA6] text-[#259BA6]'
+                : 'border-transparent text-gray-300 hover:text-[#259BA6] hover:border-[#259BA6]'
             }`}
-            onClick={() => setActiveCategory("trending")}
+            onClick={() => setActiveCategory('trending')}
           >
             Trending
           </button>
 
           <button
             className={`px-4 py-2 text-sm border-b-2 transition-colors duration-200 ${
-              activeCategory === "crypto"
-                ? "border-[#259BA6] text-[#259BA6]"
-                : "border-transparent text-gray-300 hover:text-[#259BA6] hover:border-[#259BA6]"
+              activeCategory === 'crypto'
+                ? 'border-[#259BA6] text-[#259BA6]'
+                : 'border-transparent text-gray-300 hover:text-[#259BA6] hover:border-[#259BA6]'
             }`}
-            onClick={() => setActiveCategory("crypto")}
+            onClick={() => setActiveCategory('crypto')}
           >
             Crypto
           </button>
 
           <button
             className={`px-4 py-2 text-sm border-b-2 transition-colors duration-200 ${
-              activeCategory === "sports"
-                ? "border-[#259BA6] text-[#259BA6]"
-                : "border-transparent text-gray-300 hover:text-[#259BA6] hover:border-[#259BA6]"
+              activeCategory === 'sports'
+                ? 'border-[#259BA6] text-[#259BA6]'
+                : 'border-transparent text-gray-300 hover:text-[#259BA6] hover:border-[#259BA6]'
             }`}
-            onClick={() => setActiveCategory("sports")}
+            onClick={() => setActiveCategory('sports')}
           >
             Sports
           </button>
 
           <button
             className={`px-4 py-2 text-sm border-b-2 transition-colors duration-200 ${
-              activeCategory === "culture"
-                ? "border-[#259BA6] text-[#259BA6]"
-                : "border-transparent text-gray-300 hover:text-[#259BA6] hover:border-[#259BA6]"
+              activeCategory === 'culture'
+                ? 'border-[#259BA6] text-[#259BA6]'
+                : 'border-transparent text-gray-300 hover:text-[#259BA6] hover:border-[#259BA6]'
             }`}
-            onClick={() => setActiveCategory("culture")}
+            onClick={() => setActiveCategory('culture')}
           >
             Culture
           </button>
 
           <button
             className={`px-4 py-2 text-sm border-b-2 transition-colors duration-200 ${
-              activeCategory === "politics"
-                ? "border-[#259BA6] text-[#259BA6]"
-                : "border-transparent text-gray-300 hover:text-[#259BA6] hover:border-[#259BA6]"
+              activeCategory === 'politics'
+                ? 'border-[#259BA6] text-[#259BA6]'
+                : 'border-transparent text-gray-300 hover:text-[#259BA6] hover:border-[#259BA6]'
             }`}
-            onClick={() => setActiveCategory("politics")}
+            onClick={() => setActiveCategory('politics')}
           >
             Politics
           </button>
           <button
             className={`whitespace-nowrap min-w-max px-4 py-2 text-sm border-b-2 transition-colors duration-200 ${
-              activeCategory === "tech"
-                ? "border-[#259BA6] text-[#259BA6]"
-                : "border-transparent text-gray-300 hover:text-[#259BA6] hover:border-[#259BA6]"
+              activeCategory === 'tech'
+                ? 'border-[#259BA6] text-[#259BA6]'
+                : 'border-transparent text-gray-300 hover:text-[#259BA6] hover:border-[#259BA6]'
             }`}
-            onClick={() => setActiveCategory("tech")}
+            onClick={() => setActiveCategory('tech')}
           >
             Tech & Science
           </button>
 
           <button
             className={`px-4 py-2 text-sm border-b-2 transition-colors duration-200 ${
-              activeCategory === "finance"
-                ? "border-[#259BA6] text-[#259BA6]"
-                : "border-transparent text-gray-300 hover:text-[#259BA6] hover:border-[#259BA6]"
+              activeCategory === 'finance'
+                ? 'border-[#259BA6] text-[#259BA6]'
+                : 'border-transparent text-gray-300 hover:text-[#259BA6] hover:border-[#259BA6]'
             }`}
-            onClick={() => setActiveCategory("finance")}
+            onClick={() => setActiveCategory('finance')}
           >
             Financials
           </button>
@@ -265,6 +265,7 @@ export default function Market() {
         {filteredPools.map((pool) => (
           <PoolCard
             key={pool.id}
+            id={pool.id}
             title={pool.title}
             description={pool.description}
             poolAmount={pool.poolAmount}
