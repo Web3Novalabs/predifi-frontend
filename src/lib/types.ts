@@ -20,3 +20,35 @@ export type TransactionHistory = {
   amountStaked: string
   status: string
 }
+
+// Type for StatsCard props
+export interface StatsCardProps {
+  icon: React.ReactNode;
+  title: string;
+  value: React.ReactNode;
+  trend: React.ReactNode;
+}
+
+// Type for ActivePrediction props
+export interface ActivePredictionProps {
+  title: string;
+  date: string;
+  status: string;
+  potentialPayout: string;
+  stake: string;
+  odd: string;
+  id: string;
+  description: string;
+  statusIcon: React.ReactNode;
+  idIcon: React.ReactNode;
+  actionIcon: React.ReactNode;
+}
+
+// Type for Chart props
+export interface ChartProps {
+  title: string;
+  buttonText: string;
+  data: { month: string; value: number }[];
+  yAxisLabels: string[]; // Array of y-axis labels
+  highlightedIndex?: number; // Optional index to highlight a specific bar
+}
