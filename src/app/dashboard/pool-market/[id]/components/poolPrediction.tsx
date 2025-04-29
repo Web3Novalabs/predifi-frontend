@@ -58,12 +58,7 @@ export default function PoolPrediction({ predictions }: Prediction) {
           <h2 className="text-center text-xl rounded-md p-2">Preview</h2>
           <div className="flex gap-4 items-center text-sm lg:md:text-md border border-transparent border-b-gray-800 p-4 ">
             <div className="w-[50px] h-[50px] border-2 border-[#259BA599] flex justify-center items-center rounded-lg p-2">
-              <Image
-                src="/pool/similar-pool.png"
-                alt="holder"
-                width={100}
-                height={100}
-              />
+              <Image src="/AI.png" alt="holder" width={100} height={100} />
             </div>
             <h2>Will Bitcoin reach $70K by June?</h2>
           </div>
@@ -115,7 +110,7 @@ export function SelectPrediction({
 }: SelectPredictionProps) {
   return (
     <Button
-      className={` "flex justify-between border hover:bg-teal-600 hover:text-black " ${className}`}
+      className={` "flex justify-between border-gray-800 border hover:bg-teal-600 hover:text-black " ${className}`}
       onClick={onClick}
     >
       <div>{options}</div>

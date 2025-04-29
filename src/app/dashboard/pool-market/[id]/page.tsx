@@ -36,19 +36,19 @@ export default function Market() {
   };
   const similarPools = [
     {
-      src: '/pool/similar-pool.png',
+      src: '/AI.png',
       title: 'Best AI this month for vibe coding',
       amount: '1255',
       users: '185',
     },
     {
-      src: '/pool/similar-pool.png',
+      src: '/AI.png',
       title: 'Best AI this month for vibe coding',
       amount: '1255',
       users: '185',
     },
     {
-      src: '/pool/similar-pool.png',
+      src: '/AI.png',
       title: 'Best AI this month for vibe coding',
       amount: '1255',
       users: '185',
@@ -60,7 +60,7 @@ export default function Market() {
       name: 'Zyrick',
       comment: 'xheck the next pool and see the outcome',
       date: '2024-04-03',
-      userProfile: '/pool/commenter2.png',
+      userProfile: '/commenter2.png',
     },
     {
       name: 'Birdmann',
@@ -174,7 +174,7 @@ export default function Market() {
                   <Share />
                   <span className="hidden lg:md:block ">Share </span>
                 </DialogTrigger>
-                <DialogContent className="text-white bg-black border-1 shawdow-lg rounded-md">
+                <DialogContent className="text-white bg-black border-gray-800  shawdow-lg rounded-md">
                   <DialogHeader>
                     <DialogTitle>Share to:</DialogTitle>
 

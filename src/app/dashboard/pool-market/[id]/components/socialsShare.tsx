@@ -17,7 +17,7 @@ export default function SocialsShare({ socialShare }: SocialsShareProps) {
       <div className="w-full">
         <p className="text-white font-semibold">Pool Link</p>
 
-        <div className="border flex gap-2 items-center justify-between p-2 ">
+        <div className="border-gray-800 border-1  flex gap-2 items-center justify-between p-2 ">
           <p className="italic lg:md:text-md text-sm">
             www.predifi/eventdetails.com
           </p>
@@ -40,7 +40,7 @@ export function SocialsMedia({ logo, name }: SocialsMediaProps) {
         <Image src={logo} alt="holder" width={100} height={100} />
       </div>
 
-      <p className="text-white font-bold lg:md:text-lg">{name}</p>
+      <p className="text-white  lg:md:text-lg">{name}</p>
     </div>
   );
 }
