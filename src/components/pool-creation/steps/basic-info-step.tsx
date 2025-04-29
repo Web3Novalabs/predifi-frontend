@@ -5,7 +5,7 @@ import type React from "react";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { UploadCloud } from "lucide-react";
-import { Input } from "@/components/ui/input";
+import  Input  from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { usePoolCreation } from "@/contexts/pool-creation-context";
 import Image from "next/image";
