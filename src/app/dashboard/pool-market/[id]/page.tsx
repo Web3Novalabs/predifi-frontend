@@ -57,22 +57,22 @@ export default function Market() {
 
   const comments = [
     {
-      name: 'Zyrick',
-      comment: 'xheck the next pool and see the outcome',
-      date: '2024-04-03',
-      userProfile: '/commenter2.png',
+      name: "Zyrick",
+      comment: "xheck the next pool and see the outcome",
+      date: "2024-04-03",
+      userProfile: "/pool/commenter2.png",
     },
     {
-      name: 'Birdmann',
-      comment: 'yessss 1000x',
-      date: '2024-04-03',
-      userProfile: '/pool/commenter1.png',
+      name: "Birdmann",
+      comment: "yessss 1000x",
+      date: "2024-04-03",
+      userProfile: "/pool/commenter1.png",
     },
     {
-      name: 'Ola Ola',
-      comment: 'My stake is on fire 🔥 ',
-      date: '2024-04-03',
-      userProfile: '/pool/commenter2.png',
+      name: "Ola Ola",
+      comment: "My stake is on fire 🔥 ",
+      date: "2024-04-03",
+      userProfile: "/pool/commenter2.png",
     },
   ];
 
