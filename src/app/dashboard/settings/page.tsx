@@ -1,6 +1,6 @@
 'use client';
 import CopyToClipboard from "@/components/dashboard/copy-to-clipboard";
-import { Input } from "@/components/ui/input";
+import  {Input}  from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import ThemeSelect from "@/components/dashboard/settings/theme-select";
 import TokenPreference from "@/components/dashboard/settings/token-preference";
