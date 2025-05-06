@@ -202,6 +202,7 @@ const ProfilePage = () => {
             {activeTab === "Created Pools" && (
               <>
                 <PoolCard
+                  id={1}
                   title="Best AI this month"
                   description="Consectetur et viverra fermentum laoreet lobortis enim mattis porttitor."
                   poolAmount="$1255"
@@ -214,6 +215,7 @@ const ProfilePage = () => {
                   option2Percentage=""
                 />
                 <PoolCard
+                  id={2}
                   title="Best AI this month"
                   description="Consectetur et viverra fermentum laoreet lobortis enim mattis porttitor."
                   poolAmount="$1255"
