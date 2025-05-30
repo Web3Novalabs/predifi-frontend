@@ -248,6 +248,13 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           <div className="flex items-center">
             {/* Logo */}
             <Link href="/dashboard" className="flex items-center">
+              <button
+                onClick={toggleSidebar}
+                className="text-white rounded-md w-8 h-8 flex items-center justify-center"
+                aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+              >
+                <Menu size={20} />
+              </button>
               <LayoutDashboard size={24} className="text-white" />
               <span className="ml-2 text-white font-bold text-lg">
                 Dashboard
@@ -297,7 +304,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 const Navigation: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
     <div>
-      <Layout >{children}</Layout>
+      <Layout>{children}</Layout>
     </div>
   );
 };
