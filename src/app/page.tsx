@@ -1,3 +1,4 @@
+
 import React from "react";
 import Navbar from "./Components/navBar";
 import HeroSection from "./Components/heroSection";
@@ -15,5 +16,18 @@ export default function Home() {
       <InsightsFAQSection />
       <Footer />
     </main>
+
+import Navbar from "@/components/NavbarLanding";
+
+
+export default function Home() {
+  return (
+<section>
+<Navbar />
+
+   </section>
+
   );
+
+   
 }
