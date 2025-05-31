@@ -16,18 +16,5 @@ export default function Home() {
       <InsightsFAQSection />
       <Footer />
     </main>
-
-
-
-
-export default function Home() {
-  return (
-<section>
-<Navbar />
-
-   </section>
-
   );
-
-   
 }
