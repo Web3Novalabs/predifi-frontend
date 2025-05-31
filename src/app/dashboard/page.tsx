@@ -1,10 +1,8 @@
-
 "use client";
-import React from "react";
 
-export default function Dashboard() {
-  return <div>Dashboard</div>;
-}
+// export default function Dashboard() {
+//   return <div>Dashboard</div>;
+// }
 
 import React from "react";
 import Chart from "@/components/dashboard/chart/Chart";
@@ -248,4 +246,3 @@ const StatsCard: React.FC<StatsCardProps> = ({ icon, title, value, trend }) => {
 };
 
 export default Dashboard;
-

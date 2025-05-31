@@ -6,6 +6,7 @@ import Footer from "./Components/footer";
 import FeaturesSection from "./Components/feature-section";
 import BenefitsSection from "./Components/benefit-section";
 import InsightsFAQSection from "./Components/insights-faq-section";
+
 export default function Home() {
   return (
     <main className="relative bg-[#001112]">
