@@ -17,7 +17,7 @@ export default function Home() {
       <Footer />
     </main>
 
-import Navbar from "@/components/NavbarLanding";
+
 
 
 export default function Home() {
