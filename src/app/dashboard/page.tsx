@@ -1,3 +1,9 @@
+"use client";
+
+// export default function Dashboard() {
+//   return <div>Dashboard</div>;
+// }
+
 import React from "react";
 import Chart from "@/components/dashboard/chart/Chart";
 import ActivePrediction from "@/components/dashboard/active-prediction/active-prediction";
