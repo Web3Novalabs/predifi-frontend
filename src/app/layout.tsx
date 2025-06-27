@@ -3,7 +3,7 @@ import "./globals.css";
 
 import { StarknetProvider } from "@/components/Providers";
 import { WalletProvider } from "@/components/WalletProvider";
-
+import { Toaster } from "react-hot-toast";
 
 export const metadata: Metadata = {
   title: {
@@ -58,11 +58,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-
-      <body
-      >
+      <body>
         <StarknetProvider>
-          <WalletProvider>{children}</WalletProvider>
+          <WalletProvider>
+            {children}
+            <Toaster />
+          </WalletProvider>
         </StarknetProvider>
       </body>
     </html>

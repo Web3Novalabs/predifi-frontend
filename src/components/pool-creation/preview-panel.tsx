@@ -4,10 +4,13 @@ import { CopyIcon, Check, Info } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { usePoolCreation } from "@/contexts/pool-creation-context";
 import Image from "next/image";
+import { useAccount } from "@starknet-react/core";
 
 export default function PreviewPanel() {
-  const { formData, currentStep, nextStep, prevStep } = usePoolCreation();
+  const { formData, currentStep, nextStep, prevStep, isCreatingPool } =
+    usePoolCreation();
   const [copied, setCopied] = useState(false);
+  const { address } = useAccount();
 
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text).then(() => {
@@ -204,9 +207,13 @@ export default function PreviewPanel() {
               <button
                 className="px-6 py-2 rounded-md bg-teal-500 text-black font-medium hover:bg-teal-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed w-full"
                 onClick={nextStep}
-                disabled={isNextDisabled()}
+                disabled={isNextDisabled() || isCreatingPool || !address}
               >
-                {currentStep < 3 ? "Continue" : "Proceed"}
+                {currentStep < 3
+                  ? "Continue"
+                  : isCreatingPool
+                  ? "Creating Pool..."
+                  : "Proceed"}
               </button>
             </div>
           </>

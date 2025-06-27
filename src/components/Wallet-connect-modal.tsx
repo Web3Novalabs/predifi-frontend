@@ -28,7 +28,6 @@ export default function WalletConnectModal({
   const { connectors, connectAsync, account } = useWalletContext();
   const router = useRouter();
 
-
   const handleSelect = (walletId: string) => {
     setSelectedWallet(walletId);
   };
@@ -47,7 +46,7 @@ export default function WalletConnectModal({
       await connectAsync({ connector }); // ■ await the wallet prompt
       router.push("/dashboard"); // ■ now safe to navigate
       onClose();
-    } catch (err) {  
+    } catch (err) {
       console.error("Wallet connection failed:", err); // ■ handle rejections
     }
   };
@@ -106,7 +105,6 @@ export default function WalletConnectModal({
 
           <motion.div
             className="relative w-full max-w-md rounded-2xl bg-[#0a0b1e] p-6 shadow-xl"
-            variants={modalVariants}
             initial="hidden"
             animate="visible"
             exit="exit"
