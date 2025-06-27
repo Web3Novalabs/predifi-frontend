@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { ChevronDown, Plus, X } from "lucide-react";
-import  {Input}  from "@/components/ui/input";
+import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { usePoolCreation } from "@/contexts/pool-creation-context";
@@ -13,15 +13,10 @@ export default function PredictionSetupStep() {
   const [showCategoriesDropdown, setShowCategoriesDropdown] = useState(false);
   const availableCategories = [
     "Crypto",
-    "Finance",
+    "Other",
     "Sports",
     "Politics",
     "Entertainment",
-    "Technology",
-    "AI",
-    "Science",
-    "Gaming",
-    "Social",
   ];
 
   const handleOptionChange = (index: number, value: string) => {

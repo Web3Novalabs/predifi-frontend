@@ -14,12 +14,12 @@ export interface PoolFormData {
 }
 
 export type TransactionHistory = {
-  date: string
-  action: string
-  poolName: string
-  amountStaked: string
-  status: string
-}
+  date: string;
+  action: string;
+  poolName: string;
+  amountStaked: string;
+  status: string;
+};
 
 // Type for StatsCard props
 export interface StatsCardProps {

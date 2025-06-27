@@ -20,6 +20,7 @@ import {
   UserRoundCog,
   BellDot,
 } from "lucide-react";
+import WalletConnectButton from "../WalletConnectButton";
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -282,15 +283,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             <button className="text-gray-400 hover:text-white p-2 border-2 border-gray-600 rounded-md">
               <BellDot size={20} />
             </button>
-            <button className="flex items-center space-x-2 text-gray-400 hover:text-white py-1 px-3 border-2 border-gray-600 rounded-md">
-              <Image
-                src="/accountUser.png"
-                alt="User Avatar"
-                width={30}
-                height={30}
-              />
-              <span className="hidden md:inline">Account ID</span>
-            </button>
+            <WalletConnectButton />
           </div>
         </div>
 

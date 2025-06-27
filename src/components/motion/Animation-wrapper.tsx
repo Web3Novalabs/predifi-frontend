@@ -74,7 +74,6 @@ export default function AnimationWrapper({
       initial="hidden"
       whileInView="visible"
       viewport={{ once }}
-      variants={variants[variant]}
       transition={{ duration, delay }}
       className={className}
       {...props}
