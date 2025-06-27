@@ -4,7 +4,7 @@ import Image from "next/image";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-
+ 
 // Icons
 import {
   Menu,
@@ -19,6 +19,7 @@ import {
   DiamondPlus,
   UserRoundCog,
   BellDot,
+  Trophy
 } from "lucide-react";
 import WalletConnectButton from "../WalletConnectButton";
 
@@ -75,6 +76,11 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       name: "Wallet Token",
       icon: <Wallet size={20} />,
       path: "/dashboard/wallet",
+    },
+    {
+      name: "Leaderboard",
+      icon: <Trophy size={20} />,
+      path: "/dashboard/leaderboard",
     },
     {
       name: "Settings",
