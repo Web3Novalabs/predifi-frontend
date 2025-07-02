@@ -35,7 +35,6 @@ export function StarknetProvider({ children }: { children: React.ReactNode }) {
 
     const provider = jsonRpcProvider({ rpc });
 
- 
   return (
     <StarknetConfig
       chains={[mainnet, sepolia]}

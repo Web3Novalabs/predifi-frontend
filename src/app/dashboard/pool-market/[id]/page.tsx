@@ -7,12 +7,10 @@ import { GET_POOL } from "@/constants/functionNames";
 import {
   PoolCardDetails,
   PoolDescription,
-  SimilarPools,
 } from "./components/poolDetails";
 import PoolPrediction from "./components/poolPrediction";
 import SocialsShare from "./components/socialsShare";
 import Comments from "@/components/ui/comments";
-import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import {
   Dialog,
@@ -43,7 +41,7 @@ export default function Market() {
   useEffect(() => {
     if (!pool) return;
     setPoolDetails({
-      poolId: pool.pool_id,
+      poolId: pool.pool_id.toString(),
       address: num.toHex(pool.address),
       poolName: shortString.decodeShortString(pool.poolName),
       poolDescription: pool.poolDescription,
@@ -93,6 +91,15 @@ export default function Market() {
     { logo: "/social/x.png", name: "Twitter" },
     { logo: "/social/discord.png", name: "Discord" },
   ];
+
+  if (!poolId || !Number(poolDetails?.poolId)) {
+    return (
+      <div className="flex justify-center items-center pt-60 text-red-500">
+        Invalid or missing pool ID.
+      </div>
+    );
+  }
+
 
   return (
     <div className="bg-black text-white w-full min-h-screen">
@@ -171,7 +178,6 @@ export default function Market() {
                         desc={poolDetails.poolDescription}
                       />
                     )}
-
 
                 {/* {similarPools.map((pool, index) => (
                   <SimilarPools
