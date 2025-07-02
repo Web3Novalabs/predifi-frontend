@@ -28,6 +28,7 @@ export function useContractFetch(
     address: PREDIFI_CONTRACT_ADDRESS,
     args: args,
     refetchInterval: 600000,
+    
   });
 
   return {

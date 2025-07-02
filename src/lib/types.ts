@@ -52,3 +52,29 @@ export interface ChartProps {
   yAxisLabels: string[]; // Array of y-axis labels
   highlightedIndex?: number; // Optional index to highlight a specific bar
 }
+
+export type PoolDetails = {
+  poolId: string;
+  address: string;
+  poolName: string;
+  poolDescription: string;
+  poolImage: string;
+  eventSourceUrl: string;
+  startTime: string;
+  lockTime: string;
+  endTime: string;
+  option1: string;
+  option2: string;
+  minBet: string;
+  maxBet: string;
+  creatorFee: string;
+  totalStakeOption1: number;
+  totalStakeOption2: number;
+  totalBetAmountStrk: number;
+  totalBetCount: number;
+  initialStakeShares: number;
+  isPrivate: boolean;
+  category: string;
+  poolType: string;
+  status: string;
+};

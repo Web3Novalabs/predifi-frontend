@@ -4,13 +4,14 @@ import Image from 'next/image';
 import React, { useState } from 'react';
 
 interface Prediction {
+  name: string
   predictions: {
     options: string;
     odds: string;
   }[];
 }
 
-export default function PoolPrediction({ predictions }: Prediction) {
+export default function PoolPrediction({ predictions, name }: Prediction) {
   const [stake, setStake] = useState('0');
   const [selectedOption, setSelectedOption] = useState('Option 1');
   const [selectedOdds, setSelectedOdds] = useState('1.17');
@@ -60,7 +61,7 @@ export default function PoolPrediction({ predictions }: Prediction) {
             <div className="w-[50px] h-[50px] border-2 border-[#259BA599] flex justify-center items-center rounded-lg p-2">
               <Image src="/AI.png" alt="holder" width={100} height={100} />
             </div>
-            <h2>Will Bitcoin reach $70K by June?</h2>
+            <h2>{name}</h2>
           </div>
           <div>
             <div className="flex justify-between text-sm lg:md:text-md p-4">
@@ -110,7 +111,7 @@ export function SelectPrediction({
 }: SelectPredictionProps) {
   return (
     <Button
-      className={` "flex justify-between border-gray-800 border hover:bg-teal-600 hover:text-black " ${className}`}
+      className={` "flex justify-between border-gray-800 border capitalize hover:bg-teal-600 hover:text-black " ${className}`}
       onClick={onClick}
     >
       <div>{options}</div>

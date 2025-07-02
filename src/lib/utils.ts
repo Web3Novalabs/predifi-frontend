@@ -31,3 +31,36 @@ export function bigIntToHex(value: bigint): `0x${string}` {
 
 // Bearer token for pinata
 export const PINATA_BEARER_TOKEN = "";
+
+
+export function formatToGMTPlusOne(timestamp: number): string {
+  const date = new Date(timestamp * 1000);
+
+  return date.toLocaleString("en-GB", {
+    timeZone: "Etc/GMT-1",
+    hour12: false,
+    year: "numeric",
+    month: "short",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+}
+
+
+export function formatTimeDiffFromNow(unix: number): string {
+  const now = Math.floor(Date.now() / 1000);
+  let diff = Math.max(unix - now, 0); // prevent negative
+
+  const hours = Math.floor(diff / 3600);
+  diff %= 3600;
+  const minutes = Math.floor(diff / 60);
+  const seconds = diff % 60;
+
+  const parts = [];
+  if (hours) parts.push(`${hours}h`);
+  if (minutes || hours) parts.push(`${minutes}m`);
+  parts.push(`${seconds}s`);
+
+  return parts.join(" ");
+}

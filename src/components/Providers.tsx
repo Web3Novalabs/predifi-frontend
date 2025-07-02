@@ -1,14 +1,15 @@
 "use client";
-import React from "react";
+import React, { useCallback } from "react";
  
-import { sepolia, mainnet } from "@starknet-react/chains";
+import { sepolia, mainnet, Chain } from "@starknet-react/chains";
 import {
   StarknetConfig,
   publicProvider,
   argent,
   braavos,
   useInjectedConnectors,
-  voyager
+  voyager,
+  jsonRpcProvider
 } from "@starknet-react/core";
  
 export function StarknetProvider({ children }: { children: React.ReactNode }) {
@@ -23,12 +24,22 @@ export function StarknetProvider({ children }: { children: React.ReactNode }) {
     // Randomize the order of the connectors.
     order: "random"
   });
- 
+
+
+    const rpc = useCallback((chain: Chain) => {
+    return {
+      nodeUrl: "https://starknet-sepolia.public.blastapi.io"
+    };
+  }, []);
+
+
+    const provider = jsonRpcProvider({ rpc });
+
   return (
     <StarknetConfig
       chains={[mainnet, sepolia]}
-      provider={publicProvider()}
-      connectors={connectors}
+      provider={provider}
+      connectors={connectors ?? []}
       explorer={voyager}
     >
       {children}

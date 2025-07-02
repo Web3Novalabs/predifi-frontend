@@ -85,6 +85,7 @@ export function PoolCreationProvider({ children }: { children: ReactNode }) {
         result.transaction_hash
       );
 
+      console.log(status)
       if (status.isSuccess()) {
         toast.success("Success! 🎉 Your pool has been created.");
         setIsComplete(true);
