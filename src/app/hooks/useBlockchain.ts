@@ -52,9 +52,12 @@ export function useContractFetch(
  * console.log('Settled pools:', settledPools);
  * ```
  */
+// Add at the top of the file
+import { GET_SETTLED_POOLS } from "@/constants/functionNames";
+
 export async function fetchSettledPools(): Promise<PoolDetails[]> {
   try {
-    const rawData = await readContractFunctionWithStarknetJs("get_settled_pools");
+    const rawData = await readContractFunctionWithStarknetJs(GET_SETTLED_POOLS);
 
     if (!rawData || !Array.isArray(rawData)) {
       return [];
@@ -101,7 +104,7 @@ export function getPoolWinnerInfo(pool: PoolDetails) {
   const option2Stake = pool.totalStakeOption2;
   const totalStake = option1Stake + option2Stake;
 
-  const option1Wins = option1Stake > option2Stake;
+  const option1Wins = totalStake > 0 ? option1Stake > option2Stake : false;
 
   return {
     winningOption: option1Wins ? "option1" : "option2",
