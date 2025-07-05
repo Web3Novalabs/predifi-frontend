@@ -18,7 +18,7 @@ import {
 import { StatsCardProps } from "@/lib/types";
 import { useContract, useAccount } from "@starknet-react/core";
 import { useState, useEffect } from "react";
-import abi from "@/app/abi/predifi_abi";
+import {PREDIFI_ABI} from "@/app/abi/predifi_abi";
 
 const Dashboard: React.FC = () => {
   const chartData = [
@@ -46,7 +46,7 @@ const Dashboard: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const { contract } = useContract({
-    abi,
+    abi: PREDIFI_ABI,
     address: CONTRACT_ADDRESS,
   });
 
