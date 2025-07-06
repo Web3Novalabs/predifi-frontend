@@ -41,8 +41,8 @@ const Dashboard: React.FC = () => {
   const CONTRACT_ADDRESS = "0x06ff646a722404885793669af5270d4285a8acbb6e7193332ad390844f300121";
   const POOL_ID = "1";
 
-  const [userStake, setUserStake] = useState(null);
-  const [error, setError] = useState(null);
+  const [userStake, setUserStake] = useState<any>(null);
+  const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const { contract } = useContract({
@@ -61,7 +61,7 @@ const Dashboard: React.FC = () => {
         const result = await contract.get_user_stake(POOL_ID, address);
         setUserStake(result);
       } catch (err) {
-        setError(err);
+        setError(err instanceof Error ? err.message : String(err));
       } finally {
         setIsLoading(false);
       }
