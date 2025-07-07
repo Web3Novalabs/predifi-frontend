@@ -3,7 +3,17 @@
 
 import React, { useState } from "react";
 import PoolCard from "./PoolCard";
-import { ListCollapse } from "lucide-react";
+import ClosedPoolCard from "./ClosedPoolCard";
+import { ListCollapse, ChevronDown, ChevronUp } from "lucide-react";
+import { useContract, useReadContract } from "@starknet-react/core";
+import {
+  PREDIFI_CONTRACT_ADDRESS,
+  useContractFetch,
+} from "@/app/hooks/useBlockchain";
+import { GET_POOL } from "@/constants/functionNames";
+import { CONTRACT_ABI } from "@/constants/abi";
+import { PREDIFI_ABI } from "@/app/abi/predifi_abi";
+import { useClosedPools } from "@/app/hooks/useClosedPools";
 
 // Mock data for the pools
 const mockPools = [
@@ -146,6 +156,10 @@ const mockPools = [
 
 export default function Market() {
   const [activeCategory, setActiveCategory] = useState("all");
+  const [showClosedPools, setShowClosedPools] = useState(false);
+  
+  // Fetch closed pools data
+  const { closedPools, isLoading: closedPoolsLoading, error: closedPoolsError } = useClosedPools();
 
   // Filter pools based on active category
   const filteredPools =
@@ -277,6 +291,88 @@ export default function Market() {
             option2Percentage={pool.option2Percentage}
           />
         ))}
+      </div>
+
+      {/* Closed Pools Section */}
+      <div className="px-4 mt-8">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-xl font-bold text-white flex items-center gap-2">
+            <span>Closed Pools</span>
+            <span className="bg-red-900 text-red-200 text-xs px-2 py-1 rounded-full">
+              {closedPools.length}
+            </span>
+          </h2>
+          <button
+            onClick={() => setShowClosedPools(!showClosedPools)}
+            className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors"
+          >
+            <span className="text-sm">
+              {showClosedPools ? 'Hide' : 'Show'} Closed Pools
+            </span>
+            {showClosedPools ? (
+              <ChevronUp size={16} />
+            ) : (
+              <ChevronDown size={16} />
+            )}
+          </button>
+        </div>
+
+        {showClosedPools && (
+          <div className="space-y-4">
+            {/* Loading State */}
+            {closedPoolsLoading && (
+              <div className="flex justify-center items-center py-8">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#259BA6]"></div>
+                <span className="ml-2 text-gray-400">Loading closed pools...</span>
+              </div>
+            )}
+
+            {/* Error State */}
+            {closedPoolsError && (
+              <div className="bg-red-900/20 border border-red-700 rounded-lg p-4">
+                <p className="text-red-400">
+                  Error loading closed pools: {closedPoolsError}
+                </p>
+              </div>
+            )}
+
+            {/* Empty State */}
+            {!closedPoolsLoading && !closedPoolsError && closedPools.length === 0 && (
+              <div className="text-center py-8">
+                <div className="text-gray-500 mb-2">
+                  <svg
+                    className="mx-auto h-12 w-12 text-gray-600"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={1}
+                      d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2M4 13h2m13-8V9a2 2 0 00-2-2H9a2 2 0 00-2 2v4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                  </svg>
+                </div>
+                <h3 className="text-lg font-medium text-gray-400 mb-1">
+                  No Closed Pools
+                </h3>
+                <p className="text-gray-500">
+                  There are no closed prediction pools at the moment.
+                </p>
+              </div>
+            )}
+
+            {/* Closed Pools Grid */}
+            {!closedPoolsLoading && !closedPoolsError && closedPools.length > 0 && (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {closedPools.map((pool) => (
+                  <ClosedPoolCard key={pool.poolId} pool={pool} />
+                ))}
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
