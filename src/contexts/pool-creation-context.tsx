@@ -4,9 +4,10 @@ import React, { createContext, useState, useContext, ReactNode } from "react";
 import toast from "react-hot-toast";
 import type { PoolFormData } from "@/lib/types";
 import { useAccount } from "@starknet-react/core";
-import { PREDIFI_CONTRACT_ADDRESS } from "@/app/hooks/useBlockchain";
+
 import { byteArray, cairo, CallData, shortString } from "starknet";
 import { createCairoEnum, myProvider, toEpochTime } from "@/lib/utils";
+import { PREDIFI_CONTRACT_ADDRESS } from "@/static";
 
 interface PoolCreationContextType {
   formData: PoolFormData;
@@ -85,7 +86,7 @@ export function PoolCreationProvider({ children }: { children: ReactNode }) {
         result.transaction_hash
       );
 
-      console.log(status)
+      console.log(status);
       if (status.isSuccess()) {
         toast.success("Success! 🎉 Your pool has been created.");
         setIsComplete(true);

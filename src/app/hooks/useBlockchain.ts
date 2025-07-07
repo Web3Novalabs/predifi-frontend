@@ -1,4 +1,5 @@
 import { PINATA_BEARER_TOKEN } from "@/lib/utils";
+import { PREDIFI_CONTRACT_ADDRESS } from "@/static";
 import {
   useReadContract,
 } from "@starknet-react/core";
@@ -8,6 +9,7 @@ import { PoolDetails } from "@/lib/types";
 
 export const PREDIFI_CONTRACT_ADDRESS =
   "0x06ff646a722404885793669af5270d4285a8acbb6e7193332ad390844f300121";
+
 
 export function useContractFetch(
   abi: Abi,
@@ -27,7 +29,6 @@ export function useContractFetch(
     address: PREDIFI_CONTRACT_ADDRESS,
     args: args,
     refetchInterval: 600000,
-
   });
 
   return {
