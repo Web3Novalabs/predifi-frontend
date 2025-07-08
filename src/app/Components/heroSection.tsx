@@ -26,7 +26,7 @@ export default function HeroSection() {
           </p>
           <div className="mb-16">
             <Link
-              href="#explore"
+              href="dashboard/pool-market"
               className="bg-[#37B7C3] hover:bg-cyan-500 text-slate-900 font-medium px-8 py-3 rounded-full transition-colors inline-block"
             >
               Explore Pool Market
