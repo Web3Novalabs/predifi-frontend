@@ -3,6 +3,7 @@ import { Input } from '@/components/ui/input';
 import { truncate } from '@/lib/utils';
 import Image from 'next/image';
 import React, { useState } from 'react';
+import { FaSpinner } from 'react-icons/fa';
 
 interface Prediction {
   name: string
@@ -86,27 +87,36 @@ export default function PoolPrediction({ predictions, name, isConnected, address
               <span>{+selectedOdds * +stake} strk</span>
             </div>
           </div>
-          { hasParticipatedAlready ? 
-            <div>
+          { isParticipationLoading 
+            ?  <div>
               <Button disabled={true} className="w-full bg-teal-500 py-8 hover:bg-teal-600 text-black rounded-lg disabled">
-                {truncate(address ?? "", { maxLength: 16, truncateMiddle: { front: 6, back: 5 } })}  has already bet.
+                <div className="rounded-full animate-spin">
+                  <FaSpinner />
+                </div>
               </Button>
             </div>
-            : isConnected ? 
+            : hasParticipatedAlready 
+              ? 
               <div>
-                <Button className="w-full bg-teal-500 py-8 hover:bg-teal-600 text-black rounded-lg">
-                  Bet from {truncate(address ?? "", { maxLength: 16, truncateMiddle: { front: 6, back: 5 } })} 
+                <Button disabled={true} className="w-full bg-teal-500 py-8 hover:bg-teal-600 text-black rounded-lg disabled">
+                  {truncate(address ?? "", { maxLength: 16, truncateMiddle: { front: 6, back: 5 } })}  has already bet.
                 </Button>
               </div>
-              : <div>
-                <Button className="w-full bg-teal-500 py-8 hover:bg-teal-600 text-black rounded-lg">
-                  Connect Wallet
-                </Button>
-                <div className="italic text-center">
-                  {' '}
-                  Once confirmed, this bet cannot be changed.
+              : isConnected ? 
+                <div>
+                  <Button className="w-full bg-teal-500 py-8 hover:bg-teal-600 text-black rounded-lg">
+                    Bet from {truncate(address ?? "", { maxLength: 16, truncateMiddle: { front: 6, back: 5 } })} 
+                  </Button>
                 </div>
-              </div>
+                : <div>
+                  <Button className="w-full bg-teal-500 py-8 hover:bg-teal-600 text-black rounded-lg">
+                    Connect Wallet
+                  </Button>
+                  <div className="italic text-center">
+                    {' '}
+                    Once confirmed, this bet cannot be changed.
+                  </div>
+                </div>
           }
         </div>
       </div>
