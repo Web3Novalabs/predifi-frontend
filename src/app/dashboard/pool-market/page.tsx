@@ -7,9 +7,9 @@ import ClosedPoolCard from "./ClosedPoolCard";
 import { ListCollapse, ChevronDown, ChevronUp } from "lucide-react";
 import { useContract, useReadContract } from "@starknet-react/core";
 import {
-  PREDIFI_CONTRACT_ADDRESS,
   useContractFetch,
 } from "@/app/hooks/useBlockchain";
+import { PREDIFI_CONTRACT_ADDRESS } from "@/static";
 import { GET_POOL } from "@/constants/functionNames";
 import { CONTRACT_ABI } from "@/constants/abi";
 import { PREDIFI_ABI } from "@/app/abi/predifi_abi";
