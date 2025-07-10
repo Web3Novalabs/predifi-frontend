@@ -1,9 +1,5 @@
 "use client";
 
-// export default function Dashboard() {
-//   return <div>Dashboard</div>;
-// }
-
 import React from "react";
 import Chart from "@/components/dashboard/chart/Chart";
 import ActivePrediction from "@/components/dashboard/active-prediction/active-prediction";
@@ -20,6 +16,9 @@ import {
   WithdrawalIcon,
 } from "@/assets/svgs/svgs";
 import { StatsCardProps } from "@/lib/types";
+import { useContract, useAccount } from "@starknet-react/core";
+import { useState, useEffect } from "react";
+import {PREDIFI_ABI} from "@/app/abi/predifi_abi";
 
 const Dashboard: React.FC = () => {
   const chartData = [
@@ -38,6 +37,138 @@ const Dashboard: React.FC = () => {
   ];
 
   const yAxisLabels = ["$100K", "$50K", "$30K", "$10K", "$0K"];
+  const { address } = useAccount();
+  const CONTRACT_ADDRESS = "0x06ff646a722404885793669af5270d4285a8acbb6e7193332ad390844f300121";
+  const POOL_ID = "1";
+
+  const [userStake, setUserStake] = useState<any>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const { contract } = useContract({
+    abi: PREDIFI_ABI,
+    address: CONTRACT_ADDRESS,
+  });
+
+  useEffect(() => {
+    const fetchUserStake = async () => {
+      if (!contract || !address) return;
+      
+      setIsLoading(true);
+      setError(null);
+      
+      try {
+        const result = await contract.get_user_stake(POOL_ID, address);
+        setUserStake(result);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : String(err));
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchUserStake();
+  }, [contract, address, POOL_ID]);
+
+  const formatBalance = (balance: string | number | bigint | undefined): string => {
+    if (!balance) return "0.00";
+    // Convert balance to number and handle different types
+    let numBalance: number;
+    if (typeof balance === 'bigint') {
+      numBalance = Number(balance);
+    } else if (typeof balance === 'string') {
+      numBalance = parseFloat(balance);
+    } else {
+      numBalance = Number(balance);
+    }
+    
+    // Assuming balance is in wei, convert to readable format
+    const formatted = numBalance / 1e18;
+    return formatted.toLocaleString('en-US', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    });
+  };
+
+  const calculateUSDValue = (balance: string | number | bigint | undefined, tokenPrice: number = 1): string => {
+    if (!balance) return "0.00";
+    
+    let numBalance: number;
+    if (typeof balance === 'bigint') {
+      numBalance = Number(balance);
+    } else if (typeof balance === 'string') {
+      numBalance = parseFloat(balance);
+    } else {
+      numBalance = Number(balance);
+    }
+    
+    const tokenAmount = numBalance / 1e18;
+    const usdValue = tokenAmount * tokenPrice;
+    return usdValue.toLocaleString('en-US', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    });
+  };
+
+  // Loading state
+  if (isLoading) {
+    return (
+      <div className="bg-black text-white p-4 md:p-6">
+        <div className="mb-6">
+          <h1 className="text-2xl md:text-[32px] text-white font-bold mb-2">
+            My Dashboard
+          </h1>
+          <p className="text-gray-400">Loading...</p>
+        </div>
+        <div className="bg-gradient-to-b from-[#0E0E10] to-[#181C1C] rounded-[8px] p-6">
+          <h2 className="text-[14px] text-[#C2C2C2] mb-2">Total Balance</h2>
+          <div className="text-3xl md:text-[32px] text-white font-bold mb-[4rem]">
+            <div className="animate-pulse bg-gray-600 h-8 w-48 rounded"></div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <div className="bg-black text-white p-4 md:p-6">
+        <div className="mb-6">
+          <h1 className="text-2xl md:text-[32px] text-white font-bold mb-2">
+            My Dashboard
+          </h1>
+          <p className="text-gray-400">Error loading data</p>
+        </div>
+        <div className="bg-gradient-to-b from-[#0E0E10] to-[#181C1C] rounded-[8px] p-6">
+          <h2 className="text-[14px] text-[#C2C2C2] mb-2">Total Balance</h2>
+          <div className="text-3xl md:text-[32px] text-red-400 font-bold mb-[4rem]">
+            Error loading balance
+          </div>       
+        </div>
+      </div>
+    );
+  }
+
+  // No wallet connected
+  if (!address) {
+    return (
+      <div className="bg-black text-white p-4 md:p-6">
+        <div className="mb-6">
+          <h1 className="text-2xl md:text-[32px] text-white font-bold mb-2">
+            My Dashboard
+          </h1>
+          <p className="text-gray-400">Please connect your wallet</p>
+        </div>
+        <div className="bg-gradient-to-b from-[#0E0E10] to-[#181C1C] rounded-[8px] p-6">
+          <h2 className="text-[14px] text-[#C2C2C2] mb-2">Total Balance</h2>
+          <div className="text-3xl md:text-[32px] text-white font-bold mb-[4rem]">
+            Connect Wallet
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-black text-white p-4 md:p-6">
@@ -120,11 +251,11 @@ const Dashboard: React.FC = () => {
       {/* Main Content */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         {/* Left Column */}
-        <div className="space-y-4 ">
+        <div className="space-y-4">
           <div className="bg-gradient-to-b from-[#0E0E10] to-[#181C1C] rounded-[8px] p-6">
             <h2 className="text-[14px] text-[#C2C2C2] mb-2">Total Balance</h2>
             <div className="text-3xl md:text-[32px] text-white font-bold mb-[4rem]">
-              $15,255.25
+              ${calculateUSDValue(userStake?.total_staked || "0")}
             </div>
 
             <div className="flex items-center mb-4 bg-black px-[10px] py-1 border-[0.5px] border-[#515461] rounded-[8px] w-fit">
@@ -150,7 +281,7 @@ const Dashboard: React.FC = () => {
                   6
                 </span>
               </button>
-              <button className="text-[#B6B9BE] font-semibold text-[14px] ">
+              <button className="text-[#B6B9BE] font-semibold text-[14px]">
                 Past Predictions
               </button>
             </div>
@@ -229,7 +360,7 @@ const StatsCard: React.FC<StatsCardProps> = ({ icon, title, value, trend }) => {
     <div
       className="relative rounded-[10.15px] p-5 gap-[20.31px] 
       bg-gradient-to-b from-[#0E0E10] to-[#181C1C]
-      bg-clip-border text-[#28C4D2] flex h-[118.08px]  border-t border-[#515461]
+      bg-clip-border text-[#28C4D2] flex h-[118.08px] border-t border-[#515461]
       hover:rotate-2 transition duration-300 ease-in-out overflow-hidden"
     >
       <div className="flex items-center mb-2">{icon}</div>

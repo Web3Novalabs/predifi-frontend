@@ -95,7 +95,7 @@ export default function Navbar() {
             COMMUNITY
           </Link>
           <Link
-            href="#explore"
+            href="dashboard/pool-market"
             className="bg-cyan-400 hover:bg-cyan-500 text-slate-900 font-medium px-4 py-2 rounded-md transition-colors w-full text-center mt-4"
             onClick={() => setIsMenuOpen(false)}
           >

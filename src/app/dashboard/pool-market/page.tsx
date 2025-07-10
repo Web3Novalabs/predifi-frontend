@@ -4,14 +4,6 @@
 import React, { useState } from "react";
 import PoolCard from "./PoolCard";
 import { ListCollapse } from "lucide-react";
-import { useContract, useReadContract } from "@starknet-react/core";
-import {
-  PREDIFI_CONTRACT_ADDRESS,
-  useContractFetch,
-} from "@/app/hooks/useBlockchain";
-import { GET_POOL } from "@/constants/functionNames";
-import { CONTRACT_ABI } from "@/constants/abi";
-import { PREDIFI_ABI } from "@/app/abi/predifi_abi";
 
 // Mock data for the pools
 const mockPools = [
