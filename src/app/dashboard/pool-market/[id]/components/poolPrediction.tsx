@@ -1,20 +1,34 @@
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import Image from 'next/image';
-import React, { useState } from 'react';
+import useCancelPool from "@/app/hooks/useCancelPool";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { useAccount } from "@starknet-react/core";
+import Image from "next/image";
+import React, { useState } from "react";
 
 interface Prediction {
-  name: string
+  name: string;
+  creator: string;
+  poolId: string;
   predictions: {
     options: string;
     odds: string;
   }[];
 }
 
-export default function PoolPrediction({ predictions, name }: Prediction) {
-  const [stake, setStake] = useState('0');
-  const [selectedOption, setSelectedOption] = useState('Option 1');
-  const [selectedOdds, setSelectedOdds] = useState('1.17');
+export default function PoolPrediction({
+  predictions,
+  name,
+  creator,
+  poolId
+}: Prediction) {
+  const [stake, setStake] = useState("0");
+  const [selectedOption, setSelectedOption] = useState("Option 1");
+  const [selectedOdds, setSelectedOdds] = useState("1.17");
+  const { address } = useAccount();
+  const creatorAddress = creator as `0x${string}`;
+
+  const { cancelPool, cancelstatus } = useCancelPool(poolId);
+
   return (
     <div className="col-span-2 border border-gray-800 w-full h-fit  rounded-lg">
       <div className="flex flex-col gap-4 p-4">
@@ -23,8 +37,8 @@ export default function PoolPrediction({ predictions, name }: Prediction) {
           <SelectPrediction
             className={`${
               selectedOption === prediction.options
-                ? 'bg-teal-600 text-black'
-                : ''
+                ? "bg-teal-600 text-black"
+                : ""
             }`}
             key={index}
             options={prediction.options}
@@ -35,7 +49,7 @@ export default function PoolPrediction({ predictions, name }: Prediction) {
             }}
           />
         ))}
-        {/* Stake input */}
+
         <div>
           <div className="flex justify-between text-sm lg:md:text-md  p-4">
             <span>Stake</span>
@@ -54,7 +68,6 @@ export default function PoolPrediction({ predictions, name }: Prediction) {
           </div>
         </div>
 
-        {/* Stake Preview */}
         <div className=" border-grey-800 p-4">
           <h2 className="text-center text-xl rounded-md p-2">Preview</h2>
           <div className="flex gap-4 items-center text-sm lg:md:text-md border border-transparent border-b-gray-800 p-4 ">
@@ -82,11 +95,23 @@ export default function PoolPrediction({ predictions, name }: Prediction) {
             </div>
           </div>
           <div>
-            <Button className="w-full bg-teal-500 py-8 hover:bg-teal-600 text-black rounded-lg">
-              Connect Wallet
-            </Button>
+            {address && creatorAddress === address && (
+              <Button
+                onClick={cancelPool}
+                className="w-full bg-teal-500 py-6 hover:bg-teal-600 text-black rounded-lg"
+              >
+                {cancelstatus === "pending" ? "Processing..." : " Cancel Pool"}
+              </Button>
+            )}
+
+            {!address && (
+              <Button className="w-full bg-teal-500 py-6 hover:bg-teal-600 text-black rounded-lg">
+                Connect Wallet
+              </Button>
+            )}
+
             <div className="italic text-center">
-              {' '}
+              {" "}
               Once confirmed, this bet cannot be changed.
             </div>
           </div>
