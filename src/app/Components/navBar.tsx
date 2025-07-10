@@ -56,7 +56,7 @@ export default function Navbar() {
 
         <div className="hidden md:block">
           <Link
-            href="#explore"
+            href="/explore-pools"
             className="bg-[#37B7C3] hover:bg-cyan-500 text-slate-900 font-medium px-4 py-2 rounded-md transition-colors"
           >
             Explore Pools
