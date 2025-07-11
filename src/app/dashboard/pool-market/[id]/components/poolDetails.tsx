@@ -1,5 +1,5 @@
 import { PREDIFI_ABI } from "@/app/abi/predifi_abi";
-import { PREDIFI_CONTRACT_ADDRESS } from "@/app/hooks/useBlockchain";
+import { PREDIFI_CONTRACT_ADDRESS } from "@/static";
 import {
   Accordion,
   AccordionContent,
