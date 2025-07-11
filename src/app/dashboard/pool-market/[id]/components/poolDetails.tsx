@@ -1,3 +1,5 @@
+import { PREDIFI_ABI } from "@/app/abi/predifi_abi";
+import { PREDIFI_CONTRACT_ADDRESS } from "@/static";
 import {
   Accordion,
   AccordionContent,
@@ -11,7 +13,12 @@ import {
 } from "@/lib/utils";
 import { Users, Banknote } from "lucide-react";
 import Image from "next/image";
-import { useMemo, useState } from "react";
+import { useParams } from "next/navigation";
+import { useContract, useAccount, } from "@starknet-react/core";
+import { useCallback, useMemo, useState } from "react";
+import toast from "react-hot-toast";
+import { Button } from "@/components/ui/button";
+
 interface PoolCardDetailsProps {
   title: string;
   creator: string;
@@ -25,47 +32,101 @@ export function PoolCardDetails({
   title,
   creator,
   startTime,
-  status,
+  status="Closed",
   user,
   category,
   poolImage,
 }: PoolCardDetailsProps) {
   const creatorAddress = creator as `0x${string}`;
+const { id: poolId } = useParams() as { id: string };
+
+  const poolIdUint256 = useMemo(() => {
+    if (!poolId) return [BigInt(0), BigInt(0)];
+    const bn = BigInt(poolId);
+    return [bn & BigInt("0xffffffffffffffff"), bn >> BigInt(128)];
+  }, [poolId]);
+
+  const { contract } = useContract({
+    abi: PREDIFI_ABI,
+    address: PREDIFI_CONTRACT_ADDRESS,
+  });
+
+  const { account } = useAccount();
+  const [isSending, setIsSending] = useState(false);
+
+  const handleRefund = useCallback(async () => {
+    if (!account || !contract) {
+      toast.error("Wallet not connected or contract not ready.");
+      return;
+    }
+    try {
+      setIsSending(true);
+      const response = await account.execute([
+        {
+          contractAddress: PREDIFI_CONTRACT_ADDRESS,
+          entrypoint: "refund_stake",
+          calldata: poolIdUint256.map(n => n.toString()),
+        }
+      ]);
+      console.log("Transaction sent:", response);
+      toast.success("Transaction sent!"); // success toast
+    } catch (error) {
+      console.error("Error sending refund tx:", error);
+      toast.error("Transaction failed to send");
+    } finally {
+      setIsSending(false);
+    }
+  }, [account, contract, poolIdUint256]);
   return (
-    <div className="flex lg:md:flex-row flex-col justify-between mb-8">
-      <div className="flex lg:md:flex-row flex-col lg:md:gap-6 gap-3 items-center">
+    <div className="flex flex-col justify-between mb-8 lg:md:flex-row">
+      <div className="flex flex-col items-center gap-3 lg:md:flex-row lg:md:gap-6">
         {/* Image */}
         <div className="lg:md:w-[120px] lg:md:h-[120px] w-[100px] h-[100px] flex justify-center items-center rounded-full">
           <PoolImage src={poolImage} />
+         
+
+          <div>
+         
+
+             {status === "Closed" && (
+          <Button
+            onClick={handleRefund}
+            disabled={isSending}
+            className="mt-4 bg-green-600"
+          >
+            {isSending ? "Refunding..." : "Refund Stake"}
+          </Button>
+        )}
+          </div>
         </div>
         {/* Details */}
-        <div className=" space-x-2 lg:md:text-md text-sm">
-          <span className="rounded-xl border border-gray-800 px-2 py-1">
+        <div className="space-x-2 text-sm lg:md:text-md">
+          <span className="px-2 py-1 border border-gray-800 rounded-xl">
             {category}
           </span>
 
           <div className="text-[#CCCCCC] mt-2">
-            <h2 className="text-white font-semibold capitalize">{title}</h2>
+            <h2 className="font-semibold text-white capitalize">{title}</h2>
             <p className="">
               Created by
               <span className="font-bold uppercase text-teal-500 ml-1.5">
                 {shortenAddress(creatorAddress)}
               </span>
             </p>
-            <div className="flex gap-2 items-center mt-2">
-              <div className="flex gap-2 items-center">
+            <div className="flex items-center gap-2 mt-2">
+              <div className="flex items-center gap-2">
                 <Users />
                 <span>{user}</span>
               </div>
               <p className="gap-4 mt-2">
                 <span>Status</span>{" "}
-                <span className="bg-green-900 px-2 py-1">{status}</span>{" "}
+                <span className="px-2 py-1 bg-green-900">{status}</span>{" "}
               </p>
             </div>
           </div>
         </div>
       </div>
-      <div className="lg:md:-right text-sm lg:md:text-md">
+      <div className="text-sm lg:md:-right lg:md:text-md">
         <small>
           Begins in{" "}
           <span className="text-teal-500">
@@ -138,19 +199,19 @@ export function SimilarPools({ src, title, amount, users }: SimilarPoolsProps) {
   return (
     <div className="flex flex-col gap-2 my-4">
       <h2 className="text-lg font-bold">{title}</h2>
-      <div className=" gap-4">
+      <div className="gap-4 ">
         <div className="flex gap-4 items-center border border-transparent border-b-gray-800  p-4 max-w-[500px] ">
           <div className="w-[50px] h-[50px] border-2 border-[#259BA599] flex justify-center items-center rounded-xl p-2">
             <Image src={src} alt="holder" width={100} height={100} />
           </div>
           <div className="text-[#CCCCCC]">
             <h2 className="text-white">Best AI this month for vibe coding</h2>
-            <div className="justify-between flex gap-2">
-              <div className="flex gap-2 items-center">
+            <div className="flex justify-between gap-2">
+              <div className="flex items-center gap-2">
                 <Banknote />
                 <span>${amount}</span>
               </div>
-              <div className="flex gap-2 items-center">
+              <div className="flex items-center gap-2">
                 <Users />
                 <span>{users}</span>
               </div>
