@@ -1,4 +1,5 @@
 import { PINATA_BEARER_TOKEN } from "@/lib/utils";
+import { PREDIFI_CONTRACT_ADDRESS } from "@/static";
 import {
   useContract,
   useReadContract,
@@ -7,8 +8,6 @@ import {
 } from "@starknet-react/core";
 import { useMemo } from "react";
 import { Abi, Contract, RpcProvider } from "starknet";
-export const PREDIFI_CONTRACT_ADDRESS =
-  "0x06ff646a722404885793669af5270d4285a8acbb6e7193332ad390844f300121";
 
 export function useContractFetch(
   abi: Abi,
