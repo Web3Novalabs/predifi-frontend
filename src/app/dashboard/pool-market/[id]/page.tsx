@@ -4,10 +4,7 @@ import { useParams } from "next/navigation";
 import { useContractFetch } from "@/app/hooks/useBlockchain";
 import { PREDIFI_ABI } from "@/app/abi/predifi_abi";
 import { GET_POOL } from "@/constants/functionNames";
-import {
-  PoolCardDetails,
-  PoolDescription,
-} from "./components/poolDetails";
+import { PoolCardDetails, PoolDescription } from "./components/poolDetails";
 import PoolPrediction from "./components/poolPrediction";
 import SocialsShare from "./components/socialsShare";
 import Comments from "@/components/ui/comments";
@@ -100,7 +97,6 @@ export default function Market() {
     );
   }
 
-
   return (
     <div className="bg-black text-white w-full min-h-screen">
       <Link href="/dashboard/pool-market">
@@ -111,7 +107,6 @@ export default function Market() {
 
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 mt-8 rounded-md">
         <div className="col-span-3">
-          {/* Section 1 */}
           {readIsLoading ? (
             <Skeleton className="h-20 rounded-md mb-4" />
           ) : readError ? (
@@ -212,19 +207,23 @@ export default function Market() {
           </div>
         </div>
 
-        <PoolPrediction
-          name={poolDetails?.poolName ?? ""}
-          predictions={[
-            {
-              options: poolDetails?.option1 || "Option 1",
-              odds: poolDetails?.totalStakeOption1.toString() ?? "",
-            },
-            {
-              options: poolDetails?.option2 || "Option 2",
-              odds: poolDetails?.totalStakeOption2.toString() ?? "",
-            },
-          ]}
-        />
+        {poolDetails && (
+          <PoolPrediction
+            name={poolDetails?.poolName ?? ""}
+            creator={poolDetails.address}
+            poolId={poolId}
+            predictions={[
+              {
+                options: poolDetails?.option1 || "Option 1",
+                odds: poolDetails?.totalStakeOption1.toString() ?? "",
+              },
+              {
+                options: poolDetails?.option2 || "Option 2",
+                odds: poolDetails?.totalStakeOption2.toString() ?? "",
+              },
+            ]}
+          />
+        )}
       </div>
     </div>
   );
