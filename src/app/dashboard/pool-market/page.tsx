@@ -153,6 +153,7 @@ export default function Market() {
       ? mockPools
       : mockPools.filter((pool) => pool.category === activeCategory);
 
+
   return (
     <div className="bg-black min-h-screen text-white w-full">
       <div className="flex justify-between items-center overflow-x-auto scrollbar-hide px-4 py-2">
