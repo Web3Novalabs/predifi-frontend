@@ -64,3 +64,38 @@ export function formatTimeDiffFromNow(unix: number): string {
 
   return parts.join(" ");
 }
+
+type TruncateOptions = {
+  maxLength: number;
+  suffix?: string;
+  truncateMiddle?: {
+    front: number;
+    back: number;
+  };
+};
+
+export function truncate(value: string, options: TruncateOptions): string {
+  const { maxLength, suffix = '…', truncateMiddle } = options;
+
+  if (typeof value !== 'string') return '';
+
+  if (value.length <= maxLength) return value;
+
+  if (truncateMiddle) {
+    const { front, back } = truncateMiddle;
+    const totalPreserved = front + back;
+
+    // If not enough space, fallback to normal front truncation
+    if (totalPreserved + suffix.length > maxLength || totalPreserved >= value.length) {
+      return value.slice(0, maxLength - suffix.length) + suffix;
+    }
+
+    const start = value.slice(0, front);
+    const end = value.slice(value.length - back);
+    return `${start}${suffix}${end}`;
+  }
+
+  // Default front-only truncation
+  const visibleLength = maxLength - suffix.length;
+  return value.slice(0, Math.max(visibleLength, 0)) + suffix;
+}
