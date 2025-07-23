@@ -57,7 +57,23 @@ export function PoolCreationProvider({ children }: { children: ReactNode }) {
     }
     try {
       setIsCreatingPool(true);
-      toast("heeeyyy");
+      // 1. Collect pool creation fee
+      toast.loading("Collecting pool creation fee...");
+      const feeResult = await account.execute({
+        contractAddress: PREDIFI_CONTRACT_ADDRESS,
+        entrypoint: "collect_pool_creation_fee",
+        calldata: [account.address],
+      });
+      const feeStatus = await myProvider.waitForTransaction(feeResult.transaction_hash);
+      if (!feeStatus.isSuccess()) {
+        toast.dismiss();
+        toast.error("Failed to collect pool creation fee. Please check your balance.");
+        setIsCreatingPool(false);
+        return;
+      }
+      toast.dismiss();
+      toast.success("Fee collected. Creating pool...");
+      // 2. Proceed to create pool
       const result = await account.execute({
         contractAddress: PREDIFI_CONTRACT_ADDRESS,
         entrypoint: "create_pool",
@@ -81,17 +97,20 @@ export function PoolCreationProvider({ children }: { children: ReactNode }) {
           category: createCairoEnum(formData.categories[0]),
         }),
       });
-
       const status = await myProvider.waitForTransaction(
         result.transaction_hash
       );
-
-      console.log(status);
       if (status.isSuccess()) {
         toast.success("Success! 🎉 Your pool has been created.");
         setIsComplete(true);
       }
-    } catch (err) {
+    } catch (err: any) {
+      toast.dismiss();
+      if (err?.message?.includes("insufficient")) {
+        toast.error("Insufficient balance to collect pool creation fee.");
+      } else {
+        toast.error("An error occurred during pool creation.");
+      }
       console.log(err);
     } finally {
       setIsCreatingPool(false);
