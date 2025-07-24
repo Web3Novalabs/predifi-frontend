@@ -22,9 +22,12 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useEffect, useState } from "react";
 import { PoolDetails } from "@/lib/types";
 import { num, shortString } from "starknet";
+import { useAccount } from "@starknet-react/core";
+import useGetUserParticiaptionInPool from "@/app/hooks/useGetUserParticipation";
 
 export default function Market() {
   const { id } = useParams();
+  const { address, isConnected } = useAccount();
   const poolId = Array.isArray(id) ? id[0] : id;
 
   const {
@@ -32,6 +35,12 @@ export default function Market() {
     readError,
     readData: pool,
   } = useContractFetch(PREDIFI_ABI, GET_POOL, [poolId]);
+
+  const { data: hasUserAlreadyParticipated, isLoading: isUserParticipatedLoading } = useGetUserParticiaptionInPool({
+    enabled: isConnected,
+    userAddress: address,
+    poolId: poolId
+  })
 
   const [poolDetails, setPoolDetails] = useState<PoolDetails | null>(null);
 
@@ -210,6 +219,10 @@ export default function Market() {
         {poolDetails && (
           <PoolPrediction
             name={poolDetails?.poolName ?? ""}
+          isParticipationLoading={isUserParticipatedLoading}
+          hasParticipatedAlready={hasUserAlreadyParticipated}
+          isConnected={isConnected}
+          address={address}
             creator={poolDetails.address}
             poolId={poolId}
             predictions={[

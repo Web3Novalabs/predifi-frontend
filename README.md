@@ -43,6 +43,10 @@ NEXT_PUBLIC_API_URL=https://api.example.com
 NEXT_PUBLIC_APP_ENV=development
 ```
 
+## Deployed contract Address
+
+`https://sepolia.starkscan.co/contract/0x06ff646a722404885793669af5270d4285a8acbb6e7193332ad390844f300121`
+
 ### Running the Project
 
 Start the development server:

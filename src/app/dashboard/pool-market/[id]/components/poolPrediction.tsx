@@ -1,9 +1,18 @@
+<<<<<<< HEAD
 import useCancelPool from "@/app/hooks/useCancelPool";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useAccount } from "@starknet-react/core";
 import Image from "next/image";
 import React, { useState } from "react";
+=======
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { truncate } from '@/lib/utils';
+import Image from 'next/image';
+import React, { useState } from 'react';
+import { FaSpinner } from 'react-icons/fa';
+>>>>>>> 55325bae59988d2b94495668222e4934c581a2a4
 
 interface Prediction {
   name: string;
@@ -13,8 +22,13 @@ interface Prediction {
     options: string;
     odds: string;
   }[];
+  isConnected?: boolean;
+  address?: string;
+  hasParticipatedAlready?: boolean;
+  isParticipationLoading?: boolean;
 }
 
+<<<<<<< HEAD
 export default function PoolPrediction({
   predictions,
   name,
@@ -29,6 +43,12 @@ export default function PoolPrediction({
 
   const { cancelPool, cancelstatus } = useCancelPool(poolId);
 
+=======
+export default function PoolPrediction({ predictions, name, isConnected, address, hasParticipatedAlready, isParticipationLoading }: Prediction) {
+  const [stake, setStake] = useState('0');
+  const [selectedOption, setSelectedOption] = useState('Option 1');
+  const [selectedOdds, setSelectedOdds] = useState('1.17');
+>>>>>>> 55325bae59988d2b94495668222e4934c581a2a4
   return (
     <div className="col-span-2 border border-gray-800 w-full h-fit  rounded-lg">
       <div className="flex flex-col gap-4 p-4">
@@ -94,6 +114,7 @@ export default function PoolPrediction({
               <span>{+selectedOdds * +stake} strk</span>
             </div>
           </div>
+<<<<<<< HEAD
           <div>
             {address && creatorAddress === address && (
               <Button
@@ -113,8 +134,39 @@ export default function PoolPrediction({
             <div className="italic text-center">
               {" "}
               Once confirmed, this bet cannot be changed.
+=======
+          { isParticipationLoading 
+            ?  <div>
+              <Button disabled={true} className="w-full bg-teal-500 py-8 hover:bg-teal-600 text-black rounded-lg disabled">
+                <div className="rounded-full animate-spin">
+                  <FaSpinner />
+                </div>
+              </Button>
+>>>>>>> 55325bae59988d2b94495668222e4934c581a2a4
             </div>
-          </div>
+            : hasParticipatedAlready 
+              ? 
+              <div>
+                <Button disabled={true} className="w-full bg-teal-500 py-8 hover:bg-teal-600 text-black rounded-lg disabled">
+                  {truncate(address ?? "", { maxLength: 16, truncateMiddle: { front: 6, back: 5 } })}  has already bet.
+                </Button>
+              </div>
+              : isConnected ? 
+                <div>
+                  <Button className="w-full bg-teal-500 py-8 hover:bg-teal-600 text-black rounded-lg">
+                    Bet from {truncate(address ?? "", { maxLength: 16, truncateMiddle: { front: 6, back: 5 } })} 
+                  </Button>
+                </div>
+                : <div>
+                  <Button className="w-full bg-teal-500 py-8 hover:bg-teal-600 text-black rounded-lg">
+                    Connect Wallet
+                  </Button>
+                  <div className="italic text-center">
+                    {' '}
+                    Once confirmed, this bet cannot be changed.
+                  </div>
+                </div>
+          }
         </div>
       </div>
     </div>

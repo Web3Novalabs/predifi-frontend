@@ -1,18 +1,14 @@
 import { PINATA_BEARER_TOKEN } from "@/lib/utils";
 import { PREDIFI_CONTRACT_ADDRESS } from "@/static";
-import {
-  useContract,
-  useReadContract,
-  useSendTransaction,
-  useTransactionReceipt,
-} from "@starknet-react/core";
-import { useMemo } from "react";
+import { useReadContract } from "@starknet-react/core";
 import { Abi, Contract, RpcProvider } from "starknet";
+import { PoolDetails } from "@/lib/types";
+
 
 export function useContractFetch(
   abi: Abi,
   functionName: string,
-  args: any[] = []
+  args: unknown[] = []
 ) {
   const {
     data: readData,
@@ -27,6 +23,7 @@ export function useContractFetch(
     address: PREDIFI_CONTRACT_ADDRESS,
     args: args,
     refetchInterval: 600000,
+
   });
 
   return {
@@ -39,62 +36,36 @@ export function useContractFetch(
   };
 }
 
-// Utility function to perform contract write operations
-export function useContractWriteUtility(
-  functionName: string,
-  args: any[],
-  abi: Abi
-) {
-  const { contract } = useContract({ abi, address: PREDIFI_CONTRACT_ADDRESS });
+/**
+ * Helper function to determine the winning option for a settled pool
+ * @param pool - The pool details
+ * @returns Object with winning option information
+ */
+export function getPoolWinnerInfo(pool: PoolDetails) {
+  const option1Stake = pool.totalStakeOption1;
+  const option2Stake = pool.totalStakeOption2;
+  const totalStake = option1Stake + option2Stake;
 
-  const calls = useMemo(() => {
-    if (
-      !contract ||
-      !args ||
-      args.some(
-        (arg) => arg === undefined || arg === null || arg === "0x" || arg === ""
-      )
-    ) {
-      return undefined;
-    }
-
-    return [contract.populate(functionName, args)];
-  }, [contract, functionName, args]);
-
-  const {
-    send: writeAsync,
-    data: writeData,
-    isPending: writeIsPending,
-  } = useSendTransaction({ calls });
-
-  const {
-    isLoading: waitIsLoading,
-    data: waitData,
-    status: waitStatus,
-    isError: waitIsError,
-    error: waitError,
-  } = useTransactionReceipt({
-    hash: writeData?.transaction_hash,
-    watch: true,
-  });
+  const option1Wins = totalStake > 0 ? option1Stake > option2Stake : false;
 
   return {
-    writeAsync,
-    writeData,
-    writeIsPending,
-    waitIsLoading,
-    waitData,
-    waitStatus,
-    waitIsError,
-    waitError,
-    calls,
+    winningOption: option1Wins ? "option1" : "option2",
+    winningText: option1Wins ? pool.option1 : pool.option2,
+    winningStake: option1Wins ? option1Stake : option2Stake,
+    losingOption: option1Wins ? "option2" : "option1",
+    losingText: option1Wins ? pool.option2 : pool.option1,
+    losingStake: option1Wins ? option2Stake : option1Stake,
+    winningPercentage: totalStake > 0 ? ((option1Wins ? option1Stake : option2Stake) / totalStake) * 100 : 0,
+    losingPercentage: totalStake > 0 ? ((option1Wins ? option2Stake : option1Stake) / totalStake) * 100 : 0,
+    totalStake,
+    isTie: option1Stake === option2Stake,
   };
 }
 
 export async function readContractFunctionWithStarknetJs(
   functionName: string,
-  args: any[] = []
-): Promise<any> {
+  args: unknown[] = []
+): Promise<unknown> {
   const provider = new RpcProvider({
     nodeUrl: process.env.NEXT_PUBLIC_RPC_URL,
   });
