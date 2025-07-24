@@ -78,3 +78,4 @@ export type PoolDetails = {
   poolType: string;
   status: string;
 };
+export type ActionType =  "idle" | "pending" | "success" | "error";
