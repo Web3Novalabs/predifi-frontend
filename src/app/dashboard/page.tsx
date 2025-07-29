@@ -18,7 +18,9 @@ import {
 import { StatsCardProps } from "@/lib/types";
 import { useContract, useAccount } from "@starknet-react/core";
 import { useState, useEffect } from "react";
-import {PREDIFI_ABI} from "@/app/abi/predifi_abi";
+import { PREDIFI_ABI } from "@/app/abi/predifi_abi";
+
+import { getUserPoolCount} from "../utils/contract";
 
 const Dashboard: React.FC = () => {
   const chartData = [
@@ -38,12 +40,14 @@ const Dashboard: React.FC = () => {
 
   const yAxisLabels = ["$100K", "$50K", "$30K", "$10K", "$0K"];
   const { address } = useAccount();
-  const CONTRACT_ADDRESS = "0x06ff646a722404885793669af5270d4285a8acbb6e7193332ad390844f300121";
+  const CONTRACT_ADDRESS =
+    "0x06ff646a722404885793669af5270d4285a8acbb6e7193332ad390844f300121";
   const POOL_ID = "1";
 
   const [userStake, setUserStake] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [userPoolCount, setUserPoolCount] = useState<number | null>(null);
 
   const { contract } = useContract({
     abi: PREDIFI_ABI,
@@ -53,10 +57,10 @@ const Dashboard: React.FC = () => {
   useEffect(() => {
     const fetchUserStake = async () => {
       if (!contract || !address) return;
-      
+
       setIsLoading(true);
       setError(null);
-      
+
       try {
         const result = await contract.get_user_stake(POOL_ID, address);
         setUserStake(result);
@@ -70,43 +74,64 @@ const Dashboard: React.FC = () => {
     fetchUserStake();
   }, [contract, address, POOL_ID]);
 
-  const formatBalance = (balance: string | number | bigint | undefined): string => {
+  // Fetch user pool count
+  useEffect(() => {
+    const fetchUserPoolCount = async () => {
+      if (!contract || !address) return;
+      try {
+        const count = await getUserPoolCount(contract, address);
+        setUserPoolCount(count);
+      } catch (err) {
+        console.error("Error fetching user pool count:", err);
+        setUserPoolCount(0);
+      }
+    };
+
+    fetchUserPoolCount();
+  }, [contract, address]);
+
+  const formatBalance = (
+    balance: string | number | bigint | undefined
+  ): string => {
     if (!balance) return "0.00";
     // Convert balance to number and handle different types
     let numBalance: number;
-    if (typeof balance === 'bigint') {
+    if (typeof balance === "bigint") {
       numBalance = Number(balance);
-    } else if (typeof balance === 'string') {
+    } else if (typeof balance === "string") {
       numBalance = parseFloat(balance);
     } else {
       numBalance = Number(balance);
     }
-    
+
     // Assuming balance is in wei, convert to readable format
     const formatted = numBalance / 1e18;
-    return formatted.toLocaleString('en-US', {
+    return formatted.toLocaleString("en-US", {
       minimumFractionDigits: 2,
-      maximumFractionDigits: 2
+      maximumFractionDigits: 2,
     });
   };
 
-  const calculateUSDValue = (balance: string | number | bigint | undefined, tokenPrice: number = 1): string => {
+  const calculateUSDValue = (
+    balance: string | number | bigint | undefined,
+    tokenPrice: number = 1
+  ): string => {
     if (!balance) return "0.00";
-    
+
     let numBalance: number;
-    if (typeof balance === 'bigint') {
+    if (typeof balance === "bigint") {
       numBalance = Number(balance);
-    } else if (typeof balance === 'string') {
+    } else if (typeof balance === "string") {
       numBalance = parseFloat(balance);
     } else {
       numBalance = Number(balance);
     }
-    
+
     const tokenAmount = numBalance / 1e18;
     const usdValue = tokenAmount * tokenPrice;
-    return usdValue.toLocaleString('en-US', {
+    return usdValue.toLocaleString("en-US", {
       minimumFractionDigits: 2,
-      maximumFractionDigits: 2
+      maximumFractionDigits: 2,
     });
   };
 
@@ -144,7 +169,7 @@ const Dashboard: React.FC = () => {
           <h2 className="text-[14px] text-[#C2C2C2] mb-2">Total Balance</h2>
           <div className="text-3xl md:text-[32px] text-red-400 font-bold mb-[4rem]">
             Error loading balance
-          </div>       
+          </div>
         </div>
       </div>
     );
@@ -206,7 +231,7 @@ const Dashboard: React.FC = () => {
             </div>
           }
           title="ACTIVE POOL"
-          value="75"
+          value={userPoolCount !== null ? userPoolCount : "76"}
           trend={
             <div className="flex items-center gap-2 text-[10.15px]">
               <TrendFlatIcon />
