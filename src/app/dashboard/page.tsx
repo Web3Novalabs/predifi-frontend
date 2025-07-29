@@ -16,11 +16,12 @@ import {
   WithdrawalIcon,
 } from "@/assets/svgs/svgs";
 import { StatsCardProps } from "@/lib/types";
+import { Contract } from "starknet";
 import { useContract, useAccount } from "@starknet-react/core";
 import { useState, useEffect } from "react";
 import { PREDIFI_ABI } from "@/app/abi/predifi_abi";
 
-import { getUserPoolCount} from "../utils/contract";
+import { getUserPoolCount } from "../utils/contract";
 
 const Dashboard: React.FC = () => {
   const chartData = [
@@ -79,7 +80,10 @@ const Dashboard: React.FC = () => {
     const fetchUserPoolCount = async () => {
       if (!contract || !address) return;
       try {
-        const count = await getUserPoolCount(contract, address);
+        const count = await getUserPoolCount(
+          contract as unknown as Contract,
+          address
+        );
         setUserPoolCount(count);
       } catch (err) {
         console.error("Error fetching user pool count:", err);
