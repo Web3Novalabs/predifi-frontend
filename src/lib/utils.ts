@@ -6,9 +6,9 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function shortenAddress(address: `0x${string}`, chars = 5): string {
+export function shortenAddress(address: `0x${string}`, chars = 4): string {
   if (!address || address.length < chars * 2 + 2) return address;
-  return `${address.slice(0, 4)}...${address.slice(-chars)}`;
+  return `${address.slice(0, 5)}...${address.slice(-chars)}`;
 }
 
 export const myProvider = new RpcProvider({
@@ -32,7 +32,6 @@ export function bigIntToHex(value: bigint): `0x${string}` {
 // Bearer token for pinata
 export const PINATA_BEARER_TOKEN = "";
 
-
 export function formatToGMTPlusOne(timestamp: number): string {
   const date = new Date(timestamp * 1000);
 
@@ -46,7 +45,6 @@ export function formatToGMTPlusOne(timestamp: number): string {
     minute: "2-digit",
   });
 }
-
 
 export function formatTimeDiffFromNow(unix: number): string {
   const now = Math.floor(Date.now() / 1000);
@@ -75,9 +73,9 @@ type TruncateOptions = {
 };
 
 export function truncate(value: string, options: TruncateOptions): string {
-  const { maxLength, suffix = '…', truncateMiddle } = options;
+  const { maxLength, suffix = "…", truncateMiddle } = options;
 
-  if (typeof value !== 'string') return '';
+  if (typeof value !== "string") return "";
 
   if (value.length <= maxLength) return value;
 
@@ -86,7 +84,10 @@ export function truncate(value: string, options: TruncateOptions): string {
     const totalPreserved = front + back;
 
     // If not enough space, fallback to normal front truncation
-    if (totalPreserved + suffix.length > maxLength || totalPreserved >= value.length) {
+    if (
+      totalPreserved + suffix.length > maxLength ||
+      totalPreserved >= value.length
+    ) {
       return value.slice(0, maxLength - suffix.length) + suffix;
     }
 

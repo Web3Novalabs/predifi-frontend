@@ -57,6 +57,7 @@ export function PoolCreationProvider({ children }: { children: ReactNode }) {
     }
     try {
       setIsCreatingPool(true);
+
       // 1. Collect pool creation fee
       toast.loading("Collecting pool creation fee...");
       const feeResult = await account.execute({
@@ -74,6 +75,9 @@ export function PoolCreationProvider({ children }: { children: ReactNode }) {
       toast.dismiss();
       toast.success("Fee collected. Creating pool...");
       // 2. Proceed to create pool
+
+
+
       const result = await account.execute({
         contractAddress: PREDIFI_CONTRACT_ADDRESS,
         entrypoint: "create_pool",
@@ -100,6 +104,7 @@ export function PoolCreationProvider({ children }: { children: ReactNode }) {
       const status = await myProvider.waitForTransaction(
         result.transaction_hash
       );
+
       if (status.isSuccess()) {
         toast.success("Success! 🎉 Your pool has been created.");
         setIsComplete(true);

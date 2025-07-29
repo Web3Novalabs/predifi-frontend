@@ -58,7 +58,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>
+      <body className="font-inter w-full">
         <StarknetProvider>
           <WalletProvider>
             {children}
