@@ -1,18 +1,10 @@
-<<<<<<< HEAD
-import useCancelPool from "@/app/hooks/useCancelPool";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { useAccount } from "@starknet-react/core";
-import Image from "next/image";
-import React, { useState } from "react";
-=======
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { truncate } from '@/lib/utils';
 import Image from 'next/image';
 import React, { useState } from 'react';
 import { FaSpinner } from 'react-icons/fa';
->>>>>>> 55325bae59988d2b94495668222e4934c581a2a4
+import CancelPool from './CancelPool';
 
 interface Prediction {
   name: string;
@@ -28,37 +20,23 @@ interface Prediction {
   isParticipationLoading?: boolean;
 }
 
-<<<<<<< HEAD
-export default function PoolPrediction({
-  predictions,
-  name,
-  creator,
-  poolId
-}: Prediction) {
-  const [stake, setStake] = useState("0");
-  const [selectedOption, setSelectedOption] = useState("Option 1");
-  const [selectedOdds, setSelectedOdds] = useState("1.17");
-  const { address } = useAccount();
-  const creatorAddress = creator as `0x${string}`;
-
-  const { cancelPool, cancelstatus } = useCancelPool(poolId);
-
-=======
-export default function PoolPrediction({ predictions, name, isConnected, address, hasParticipatedAlready, isParticipationLoading }: Prediction) {
+export default function PoolPrediction({ predictions, name, creator, poolId, isConnected, address, hasParticipatedAlready, isParticipationLoading }: Prediction) {
   const [stake, setStake] = useState('0');
   const [selectedOption, setSelectedOption] = useState('Option 1');
   const [selectedOdds, setSelectedOdds] = useState('1.17');
->>>>>>> 55325bae59988d2b94495668222e4934c581a2a4
   return (
     <div className="col-span-2 border border-gray-800 w-full h-fit  rounded-lg">
       <div className="flex flex-col gap-4 p-4">
-        <h2 className="text-lg font-bold text-center">Select Prediction</h2>
+        <div className="flex justify-between items-center">
+          <h2 className="text-lg font-bold">Select Prediction</h2>
+          <CancelPool poolId={poolId} creator={creator} />
+        </div>
         {predictions.map((prediction, index) => (
           <SelectPrediction
             className={`${
               selectedOption === prediction.options
-                ? "bg-teal-600 text-black"
-                : ""
+                ? 'bg-teal-600 text-black'
+                : ''
             }`}
             key={index}
             options={prediction.options}
@@ -69,7 +47,7 @@ export default function PoolPrediction({ predictions, name, isConnected, address
             }}
           />
         ))}
-
+        {/* Stake input */}
         <div>
           <div className="flex justify-between text-sm lg:md:text-md  p-4">
             <span>Stake</span>
@@ -88,6 +66,7 @@ export default function PoolPrediction({ predictions, name, isConnected, address
           </div>
         </div>
 
+        {/* Stake Preview */}
         <div className=" border-grey-800 p-4">
           <h2 className="text-center text-xl rounded-md p-2">Preview</h2>
           <div className="flex gap-4 items-center text-sm lg:md:text-md border border-transparent border-b-gray-800 p-4 ">
@@ -114,27 +93,6 @@ export default function PoolPrediction({ predictions, name, isConnected, address
               <span>{+selectedOdds * +stake} strk</span>
             </div>
           </div>
-<<<<<<< HEAD
-          <div>
-            {address && creatorAddress === address && (
-              <Button
-                onClick={cancelPool}
-                className="w-full bg-teal-500 py-6 hover:bg-teal-600 text-black rounded-lg"
-              >
-                {cancelstatus === "pending" ? "Processing..." : " Cancel Pool"}
-              </Button>
-            )}
-
-            {!address && (
-              <Button className="w-full bg-teal-500 py-6 hover:bg-teal-600 text-black rounded-lg">
-                Connect Wallet
-              </Button>
-            )}
-
-            <div className="italic text-center">
-              {" "}
-              Once confirmed, this bet cannot be changed.
-=======
           { isParticipationLoading 
             ?  <div>
               <Button disabled={true} className="w-full bg-teal-500 py-8 hover:bg-teal-600 text-black rounded-lg disabled">
@@ -142,7 +100,6 @@ export default function PoolPrediction({ predictions, name, isConnected, address
                   <FaSpinner />
                 </div>
               </Button>
->>>>>>> 55325bae59988d2b94495668222e4934c581a2a4
             </div>
             : hasParticipatedAlready 
               ? 

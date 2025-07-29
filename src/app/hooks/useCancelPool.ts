@@ -13,6 +13,7 @@ export default function useCancelPool(poolId: string) {
 
   const cancelPool = async () => {
     if (!account) {
+      toast.error("Account not connected!");
       return;
     }
     try {
