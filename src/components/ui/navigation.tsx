@@ -4,7 +4,7 @@ import Image from "next/image";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
- 
+
 // Icons
 import {
   Menu,
@@ -19,7 +19,7 @@ import {
   DiamondPlus,
   UserRoundCog,
   BellDot,
-  Trophy
+  Trophy,
 } from "lucide-react";
 import WalletConnectButton from "../WalletConnectButton";
 
@@ -286,7 +286,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           </div>
 
           <div className="flex items-center space-x-2 md:space-x-4">
-            <button className="text-gray-400 hover:text-white p-2 border-2 border-gray-600 rounded-md">
+            <button className="text-[#EBEBED] p-2 border-1 border-[#515461] rounded-[4px]">
               <BellDot size={20} />
             </button>
             <WalletConnectButton />

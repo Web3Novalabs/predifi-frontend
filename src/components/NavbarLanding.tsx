@@ -22,8 +22,6 @@ export default function Navbar() {
   const { account, connectWallet, disconnectWallet, connectors } =
     useWalletContext();
 
- 
-
   // Close dropdown when clicking outside
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -246,7 +244,6 @@ export default function Navbar() {
       <WalletDisconnectModal
         isOpen={isDisconnectModalOpen}
         onClose={() => setIsDisconnectModalOpen(false)}
-        onDisconnect={handleDisconnect}
       />
     </>
   );
