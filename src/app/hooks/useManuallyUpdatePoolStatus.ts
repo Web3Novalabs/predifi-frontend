@@ -3,15 +3,10 @@ import { PREDIFI_ABI } from "../abi/predifi_abi";
 import { PREDIFI_CONTRACT_ADDRESS } from "@/static";
 import { useState } from "react";
 import { cairo, CallData } from "starknet";
-import { myProvider } from "@/lib/utils";
+import { createCairoEnum, myProvider } from "@/lib/utils";
 import toast from "react-hot-toast";
 
-export interface PoolStatus {
-  active?: string;
-  locked?: string;
-  settled?: string;
-  closed?: string;
-}
+export type PoolStatus = "Active" | "Locked" | "Settled" | "Closed" | "Suspended";
 
 interface UseManuallyUpdatePoolStateOptions {
   onSuccess?: (data: any) => void;
@@ -50,7 +45,7 @@ const useManuallyUpdatePoolState = ({
       const poolIdU256 = cairo.uint256(poolId.toString());
       const callData = CallData.compile({
         pool_id: poolIdU256,
-        new_status: newStatus,
+        new_status: createCairoEnum(newStatus),
       });
 
       const result = await account?.execute({
