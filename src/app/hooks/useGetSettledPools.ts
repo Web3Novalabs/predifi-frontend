@@ -11,7 +11,7 @@ interface UseGetSettledPoolsOptions {
   | number
   | false
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  | ((query: any) => number | false | undefined);
+  | ((query: unknown) => number | false | undefined);
 }
 
 const useGetSettledPools = ({

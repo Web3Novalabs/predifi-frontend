@@ -1870,4 +1870,4 @@ export const PREDIFI_ABI: Abi = [
       },
     ],
   },
-];
+] as const;
