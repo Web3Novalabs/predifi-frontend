@@ -4,9 +4,9 @@ import { useParams } from "next/navigation";
 import { useContractFetch } from "@/app/hooks/useBlockchain";
 import { PREDIFI_ABI } from "@/app/abi/predifi_abi";
 import { GET_POOL } from "@/constants/functionNames";
-import { PoolCardDetails, PoolDescription } from "./components/poolDetails";
-import PoolPrediction from "./components/poolPrediction";
-import SocialsShare from "./components/socialsShare";
+import { PoolCardDetails, PoolDescription } from "./(components)/poolDetails";
+import PoolPrediction from "./(components)/poolPrediction";
+import SocialsShare from "./(components)/socialsShare";
 import Comments from "@/components/ui/comments";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import {

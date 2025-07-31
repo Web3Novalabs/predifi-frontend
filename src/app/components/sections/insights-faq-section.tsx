@@ -28,7 +28,6 @@ export default function InsightsFAQSection() {
 
   return (
     <div className="relative text-white mb-10 py-20 overflow-hidden">
-
       <div className="relative max-w-7xl mx-auto px-6">
         <div className="text-center mb-20">
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-16 max-w-4xl mx-auto leading-tight">

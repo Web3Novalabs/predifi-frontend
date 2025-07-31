@@ -8,7 +8,7 @@ interface UseGetLockedPoolsOptions {
   refetchInterval?:
     | number
     | false
-    | ((query: any) => number | false | undefined);
+    | ((query: unknown) => number | false | undefined);
 }
 
 const useGetLockedPools = ({

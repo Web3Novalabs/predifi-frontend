@@ -1,10 +1,11 @@
 import { PoolDetails } from "@/lib/types";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { PREDIFI_ABI } from "../abi/predifi_abi";
 import { GET_ACTIVE_POOLS } from "@/constants/functionNames";
 import { useContractFetch } from "./useBlockchain";
 import { num, shortString } from "starknet";
+import { Pool } from "@/@types";
 
 export default function useGetActivePools() {
   const [pools, setPools] = useState<PoolDetails[]>([]);
@@ -19,6 +20,7 @@ export default function useGetActivePools() {
 
   useEffect(() => {
     if (!Array.isArray(poolDetailsList)) return;
+    console.log(poolDetailsList);
     const decodedPools = poolDetailsList.map(
       (pool: any): PoolDetails => ({
         poolId: pool.pool_id.toString(),
@@ -40,7 +42,7 @@ export default function useGetActivePools() {
         minBet: pool.minBetAmount.toString(),
         maxBet: pool.maxBetAmount.toString(),
         creatorFee: pool.creatorFee.toString(),
-        isPrivate: pool.isPrivate.toString(),
+        isPrivate: pool.isPrivate,
         category: Object.keys(pool.category?.variant || {})[0] ?? "Unknown",
         poolType: Object.keys(pool.poolType?.variant || {})[0] ?? "Unknown",
         status: Object.keys(pool.status?.variant || {})[0] ?? "Unknown",
@@ -63,6 +65,6 @@ export default function useGetActivePools() {
     pools,
     readError,
     handleViewPool,
-    handleBackToHome
+    handleBackToHome,
   };
 }
