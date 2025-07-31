@@ -24,7 +24,6 @@ const PoolCard: React.FC<PoolCardProps> = ({
   description,
   poolAmount,
   tokenAmount,
-
   option1,
   option1Percentage,
   option2,

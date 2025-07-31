@@ -4,9 +4,12 @@ import { truncate } from '@/lib/utils';
 import Image from 'next/image';
 import React, { useState } from 'react';
 import { FaSpinner } from 'react-icons/fa';
+import CancelPool from './CancelPool';
 
 interface Prediction {
-  name: string
+  name: string;
+  creator: string;
+  poolId: string;
   predictions: {
     options: string;
     odds: string;
@@ -17,14 +20,17 @@ interface Prediction {
   isParticipationLoading?: boolean;
 }
 
-export default function PoolPrediction({ predictions, name, isConnected, address, hasParticipatedAlready, isParticipationLoading }: Prediction) {
+export default function PoolPrediction({ predictions, name, creator, poolId, isConnected, address, hasParticipatedAlready, isParticipationLoading }: Prediction) {
   const [stake, setStake] = useState('0');
   const [selectedOption, setSelectedOption] = useState('Option 1');
   const [selectedOdds, setSelectedOdds] = useState('1.17');
   return (
     <div className="col-span-2 border border-gray-800 w-full h-fit  rounded-lg">
       <div className="flex flex-col gap-4 p-4">
-        <h2 className="text-lg font-bold text-center">Select Prediction</h2>
+        <div className="flex justify-between items-center">
+          <h2 className="text-lg font-bold">Select Prediction</h2>
+          <CancelPool poolId={poolId} creator={creator} />
+        </div>
         {predictions.map((prediction, index) => (
           <SelectPrediction
             className={`${

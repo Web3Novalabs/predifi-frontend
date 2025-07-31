@@ -4,11 +4,9 @@ import { useParams } from "next/navigation";
 import { useContractFetch } from "@/app/hooks/useBlockchain";
 import { PREDIFI_ABI } from "@/app/abi/predifi_abi";
 import { GET_POOL } from "@/constants/functionNames";
-import {
-  PoolCardDetails,
-  PoolDescription,
-} from "./components/poolDetails";
+import { PoolCardDetails, PoolDescription } from "./components/poolDetails";
 import PoolPrediction from "./components/poolPrediction";
+import StakePool from "./components/StakePool";
 import SocialsShare from "./components/socialsShare";
 import Comments from "@/components/ui/comments";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
@@ -39,11 +37,14 @@ export default function Market() {
     readData: pool,
   } = useContractFetch(PREDIFI_ABI, GET_POOL, [poolId]);
 
-  const { data: hasUserAlreadyParticipated, isLoading: isUserParticipatedLoading } = useGetUserParticiaptionInPool({
+  const {
+    data: hasUserAlreadyParticipated,
+    isLoading: isUserParticipatedLoading,
+  } = useGetUserParticiaptionInPool({
     enabled: isConnected,
     userAddress: address,
-    poolId: poolId
-  })
+    poolId: poolId,
+  });
 
   const [poolDetails, setPoolDetails] = useState<PoolDetails | null>(null);
 
@@ -109,7 +110,6 @@ export default function Market() {
     );
   }
 
-
   return (
     <div className="bg-black text-white w-full min-h-screen">
       <Link href="/dashboard/pool-market">
@@ -118,9 +118,8 @@ export default function Market() {
         </div>
       </Link>
 
-      <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 mt-8 rounded-md">
-        <div className="col-span-3">
-          {/* Section 1 */}
+      <div className="grid grid-cols-1 lg:grid-cols-8 gap-4 mt-8 rounded-md">
+        <div className="col-span-5">
           {readIsLoading ? (
             <Skeleton className="h-20 rounded-md mb-4" />
           ) : readError ? (
@@ -157,11 +156,37 @@ export default function Market() {
                     <span>{poolDetails?.option2}</span>
                     <span>{poolDetails?.totalStakeOption2}</span>
                   </div>
-                  <div className="text-right text-sm">
-                    Total stake distribution:{" "}
-                    <span className="text-lg font-semibold">
-                      {poolDetails?.totalBetAmountStrk}
-                    </span>
+                  <div className="flex justify-between items-center">
+                    <div className="text-sm">
+                      Total stake distribution:{" "}
+                      <span className="text-lg font-semibold text-teal-400">
+                        {poolDetails?.totalBetAmountStrk} STRK
+                      </span>
+                    </div>
+                    {poolDetails && (
+                      <Dialog>
+                        <DialogTrigger className="bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-black px-6 py-2 rounded-full font-medium text-sm transition-all duration-200 shadow-lg hover:shadow-teal-500/25 flex items-center gap-2">
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                          </svg>
+                          Stake
+                        </DialogTrigger>
+                        <DialogContent className="text-white bg-black border-gray-800 shadow-lg rounded-md max-w-md">
+                          <DialogHeader>
+                            <DialogTitle>Stake on Pool</DialogTitle>
+                          </DialogHeader>
+                          <StakePool
+                            poolId={poolId}
+                            isConnected={isConnected}
+                            address={address}
+                            onStakeSuccess={() => {
+                              // Optionally refresh pool data after successful stake
+                              window.location.reload();
+                            }}
+                          />
+                        </DialogContent>
+                      </Dialog>
+                    )}
                   </div>
                 </>
               )}
@@ -221,23 +246,31 @@ export default function Market() {
           </div>
         </div>
 
-        <PoolPrediction
-          name={poolDetails?.poolName ?? ""}
-          isParticipationLoading={isUserParticipatedLoading}
-          hasParticipatedAlready={hasUserAlreadyParticipated}
-          isConnected={isConnected}
-          address={address}
-          predictions={[
-            {
-              options: poolDetails?.option1 || "Option 1",
-              odds: poolDetails?.totalStakeOption1.toString() ?? "",
-            },
-            {
-              options: poolDetails?.option2 || "Option 2",
-              odds: poolDetails?.totalStakeOption2.toString() ?? "",
-            },
-          ]}
-        />
+        <div className="space-y-4 col-span-3 ">
+          {poolDetails && (
+            <PoolPrediction
+              name={poolDetails?.poolName ?? ""}
+              isParticipationLoading={isUserParticipatedLoading}
+              hasParticipatedAlready={hasUserAlreadyParticipated}
+              isConnected={isConnected}
+              address={address}
+              creator={poolDetails.address}
+              poolId={poolId}
+              predictions={[
+                {
+                  options: poolDetails?.option1 || "Option 1",
+                  odds: poolDetails?.totalStakeOption1.toString() ?? "",
+                },
+                {
+                  options: poolDetails?.option2 || "Option 2",
+                  odds: poolDetails?.totalStakeOption2.toString() ?? "",
+                },
+              ]}
+            />
+          )}
+
+
+        </div>
       </div>
     </div>
   );

@@ -1,22 +1,20 @@
 "use client";
-
-import AnimationWrapper from "@/components/motion/Animation-wrapper";
-import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
 import { X } from "lucide-react";
+import { Button } from "./ui/button";
+import { useDisconnect } from "@starknet-react/core";
 
 interface WalletDisconnectModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onDisconnect: () => void;
 }
 
 export default function WalletDisconnectModal({
   isOpen,
   onClose,
-  onDisconnect,
 }: WalletDisconnectModalProps) {
+  const { disconnectAsync } = useDisconnect();
   //pathname check
   const pathName = usePathname();
   const userDashboardPath = "/dashboard/user";
@@ -25,97 +23,61 @@ export default function WalletDisconnectModal({
   //router
   const router = useRouter();
 
-  const handleDisconnect = () => {
+  const handleDisconnect = async () => {
     if (
       userDashboardPath === pathName ||
       institutionDashboardPath === pathName
     ) {
       router.push("/"); // ■ now safe to navigate
     }
-    onDisconnect();
+    await disconnectAsync();
+    onClose();
   };
 
-  const modalVariants = {
-    hidden: { opacity: 0, scale: 0.9 },
-    visible: {
-      opacity: 1,
-      scale: 1,
-      transition: {
-        duration: 0.2,
-        ease: "easeOut",
-      },
-    },
-    exit: {
-      opacity: 0,
-      scale: 0.9,
-      transition: {
-        duration: 0.2,
-        ease: "easeIn",
-      },
-    },
-  };
-
-  const backdropVariants = {
-    hidden: { opacity: 0 },
-    visible: { opacity: 1 },
-    exit: { opacity: 0 },
-  };
-
+  if (!isOpen) return null;
   return (
-    <AnimatePresence>
-      {isOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center">
-          <motion.div
-            className="fixed inset-0 bg-black/50 backdrop-blur-sm"
-            variants={backdropVariants}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-            onClick={onClose}
-          />
-
-          <motion.div
-            className="relative w-full max-w-sm rounded-2xl bg-[#0a0b1e] p-6 shadow-xl"
-            initial="hidden"
-            animate="visible"
-            exit="exit"
+    <div
+      className="absolute inset-0 bg-gradient-to-b backdrop-blur-md from-rgba(14, 14, 16, 0.6) to-rgba(14, 14, 16, 0.6)  bg-opacity-0 flex items-center justify-center z-50"
+      onClick={onClose}
+    >
+      <div
+        className="bg-[#0E0E10] p-6 relative w-[550px] rounded-[8px]"
+        onClick={(e) => {
+          e.stopPropagation();
+        }}
+        style={{
+          boxShadow: "4px 4px 9.7px 0px #25273599",
+        }}
+      >
+        <button
+          className="absolute top-4 right-4 text-white cursor-pointer"
+          onClick={onClose}
+        >
+          <X />
+        </button>
+        <h2 className="text-[#FFFFFF] text-center text-2xl font-normal mb-4">
+          Disconnect Wallet
+        </h2>
+        <h3 className="text-[#D9D9D9] text-center text-base mb-9 font-light">
+          Are you sure you want to disconnect your wallet?
+        </h3>
+        <div className="space-y-3 mt-6">
+          <Button
+            variant="outline"
+            className="w-full h-auto py-3 px-4 bg-[#1F2024] border-0 text-white text-center"
+            onClick={handleDisconnect}
           >
-            <div className="flex items-center justify-between mb-8 px-10">
-              <h2 className="text-xl font-semibold text-white">
-                Disconnect Wallet
-              </h2>
-              <button
-                onClick={onClose}
-                className="text-gray-400 hover:text-white transition-colors"
-              >
-                <X size={20} />
-              </button>
-            </div>
-
-            <AnimationWrapper variant="fadeIn" delay={0.1}>
-              <p className="text-gray-300 mb-6 text-center">
-                Are you sure you want to disconnect your wallet?
-              </p>
-            </AnimationWrapper>
-
-            <div className="flex justify-between gap-2 mt-8">
-              <button
-                className=" w-full rounded-[48px] text-center border border-gray-700 text-white font-medium hover:bg-gray-800 transition-colors"
-                onClick={onClose}
-              >
-                Cancel
-              </button>
-
-              <button
-                className=" py-3 w-full text-center rounded-[48px] bg-teal-500 text-white font-medium hover:bg-teal-600 transition-colors"
-                onClick={handleDisconnect}
-              >
-                Disconnect Wallet
-              </button>
-            </div>
-          </motion.div>
+            Disconnect wallet
+          </Button>
+          <Button
+            variant="outline"
+            className="w-full h-auto py-3 px-4 bg-transparent border-1 border-[#646982] text-white text-center"
+            onClick={onClose}
+          >
+            Cancel
+          </Button>
         </div>
-      )}
-    </AnimatePresence>
+      </div>
+    </div>
   );
 }
