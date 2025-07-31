@@ -1,3 +1,6 @@
+"use client;"
+import useManuallyUpdatePoolState, { PoolStatus } from "@/app/hooks/useManuallyUpdatePoolStatus";
+import useValidatorCheck from "@/app/hooks/useValidatorCheck";
 import { PREDIFI_ABI } from "@/app/abi/predifi_abi";
 import { PREDIFI_CONTRACT_ADDRESS } from "@/static";
 import {
@@ -6,6 +9,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { Button } from "@/components/ui/button";
 import {
   formatTimeDiffFromNow,
   formatToGMTPlusOne,
@@ -14,10 +18,10 @@ import {
 import { Users, Banknote } from "lucide-react";
 import Image from "next/image";
 import { useParams } from "next/navigation";
+import { ManuallyUpdateModal } from "./manuallyUpdateModal";
 import { useContract, useAccount, } from "@starknet-react/core";
 import { useCallback, useMemo, useState } from "react";
 import toast from "react-hot-toast";
-import { Button } from "@/components/ui/button";
 
 interface PoolCardDetailsProps {
   title: string;
@@ -37,7 +41,11 @@ export function PoolCardDetails({
   category,
   poolImage,
 }: PoolCardDetailsProps) {
+  const [isOpen, setIsOpen] = useState(false);
+
   const creatorAddress = creator as `0x${string}`;
+  const { isLoading, isValidator } = useValidatorCheck();
+ 
 const { id: poolId } = useParams() as { id: string };
 
   const poolIdUint256 = useMemo(() => {
@@ -126,15 +134,28 @@ const { id: poolId } = useParams() as { id: string };
           </div>
         </div>
       </div>
-      <div className="text-sm lg:md:-right lg:md:text-md">
-        <small>
-          Begins in{" "}
-          <span className="text-teal-500">
-            {formatTimeDiffFromNow(Number(startTime))}{" "}
-          </span>
-        </small>
-        <p>{formatToGMTPlusOne(Number(startTime))}</p>
+      <div className="lg:md:-right text-sm lg:md:text-md">
+        <div className="">
+          <small>
+            Begins in{" "}
+            <span className="text-teal-500">
+              {formatTimeDiffFromNow(Number(startTime))}{" "}
+            </span>
+          </small>
+          <p>{formatToGMTPlusOne(Number(startTime))}</p>
+        </div>
+        {!isLoading && isValidator && (
+          <Button onClick={()=>{setIsOpen(true)}} className="mt-4 bg-teal-500 hover:bg-teal-600">
+            Update pool status
+          </Button>
+        )}
       </div>
+      <ManuallyUpdateModal
+        isOpen={isOpen}
+        id={poolId}
+        onClose={() => setIsOpen(false)}        
+        currentStatus={status as PoolStatus}
+      />
     </div>
   );
 }
