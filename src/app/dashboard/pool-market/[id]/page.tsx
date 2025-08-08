@@ -202,16 +202,16 @@ export default function Market() {
               <TabsContent value="description">
                 {readIsLoading
                   ? Array.from({ length: 3 }).map((_, i) => (
-                      <Skeleton key={i} className="h-6 w-full mb-2" />
-                    ))
+                    <Skeleton key={i} className="h-6 w-full mb-2" />
+                  ))
                   : poolDetails && (
-                      <PoolDescription
-                        startTime={poolDetails.startTime}
-                        lockTime={poolDetails.lockTime}
-                        endTime={poolDetails.endTime}
-                        desc={poolDetails.poolDescription}
-                      />
-                    )}
+                    <PoolDescription
+                      startTime={poolDetails.startTime}
+                      lockTime={poolDetails.lockTime}
+                      endTime={poolDetails.endTime}
+                      desc={poolDetails.poolDescription}
+                    />
+                  )}
 
                 {/* {similarPools.map((pool, index) => (
                   <SimilarPools
@@ -256,6 +256,11 @@ export default function Market() {
               address={address}
               creator={poolDetails.address}
               poolId={poolId}
+              poolStatus={poolDetails.status}
+              onVoteSuccess={() => {
+                // Refresh pool data after successful vote
+                window.location.reload();
+              }}
               predictions={[
                 {
                   options: poolDetails?.option1 || "Option 1",
