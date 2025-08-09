@@ -5,6 +5,7 @@ import Image from 'next/image';
 import React, { useState } from 'react';
 import { FaSpinner } from 'react-icons/fa';
 import CancelPool from './CancelPool';
+import useVotePool from '@/app/hooks/useVotePool';
 
 interface Prediction {
   name: string;
@@ -18,12 +19,28 @@ interface Prediction {
   address?: string;
   hasParticipatedAlready?: boolean;
   isParticipationLoading?: boolean;
+  poolStatus?: string;
+  onVoteSuccess?: () => void;
 }
 
-export default function PoolPrediction({ predictions, name, creator, poolId, isConnected, address, hasParticipatedAlready, isParticipationLoading }: Prediction) {
+export default function PoolPrediction({ predictions, name, creator, poolId, isConnected, address, hasParticipatedAlready, isParticipationLoading, poolStatus, onVoteSuccess }: Prediction) {
   const [stake, setStake] = useState('0');
   const [selectedOption, setSelectedOption] = useState('Option 1');
   const [selectedOdds, setSelectedOdds] = useState('1.17');
+
+  const { voteStatus, voteOnPool } = useVotePool(poolId);
+
+  const handleVote = async () => {
+    if (!stake || parseFloat(stake) <= 0) {
+      return;
+    }
+
+    const result = await voteOnPool(selectedOption, stake, poolStatus);
+
+    if (result && onVoteSuccess) {
+      onVoteSuccess();
+    }
+  };
   return (
     <div className="col-span-2 border border-gray-800 w-full h-fit  rounded-lg">
       <div className="flex flex-col gap-4 p-4">
@@ -33,11 +50,10 @@ export default function PoolPrediction({ predictions, name, creator, poolId, isC
         </div>
         {predictions.map((prediction, index) => (
           <SelectPrediction
-            className={`${
-              selectedOption === prediction.options
-                ? 'bg-teal-600 text-black'
-                : ''
-            }`}
+            className={`${selectedOption === prediction.options
+              ? 'bg-teal-600 text-black'
+              : ''
+              }`}
             key={index}
             options={prediction.options}
             odds={prediction.odds}
@@ -93,25 +109,38 @@ export default function PoolPrediction({ predictions, name, creator, poolId, isC
               <span>{+selectedOdds * +stake} strk</span>
             </div>
           </div>
-          { isParticipationLoading 
-            ?  <div>
+          {isParticipationLoading
+            ? <div>
               <Button disabled={true} className="w-full bg-teal-500 py-8 hover:bg-teal-600 text-black rounded-lg disabled">
                 <div className="rounded-full animate-spin">
                   <FaSpinner />
                 </div>
               </Button>
             </div>
-            : hasParticipatedAlready 
-              ? 
+            : hasParticipatedAlready
+              ?
               <div>
                 <Button disabled={true} className="w-full bg-teal-500 py-8 hover:bg-teal-600 text-black rounded-lg disabled">
                   {truncate(address ?? "", { maxLength: 16, truncateMiddle: { front: 6, back: 5 } })}  has already bet.
                 </Button>
               </div>
-              : isConnected ? 
+              : isConnected ?
                 <div>
-                  <Button className="w-full bg-teal-500 py-8 hover:bg-teal-600 text-black rounded-lg">
-                    Bet from {truncate(address ?? "", { maxLength: 16, truncateMiddle: { front: 6, back: 5 } })} 
+                  <Button
+                    onClick={handleVote}
+                    disabled={voteStatus === "pending" || !stake || parseFloat(stake) <= 0}
+                    className="w-full bg-teal-500 py-8 hover:bg-teal-600 text-black rounded-lg disabled:opacity-50"
+                  >
+                    {voteStatus === "pending" ? (
+                      <div className="flex items-center gap-2">
+                        <div className="rounded-full animate-spin">
+                          <FaSpinner />
+                        </div>
+                        Processing Vote...
+                      </div>
+                    ) : (
+                      `Bet from ${truncate(address ?? "", { maxLength: 16, truncateMiddle: { front: 6, back: 5 } })}`
+                    )}
                   </Button>
                 </div>
                 : <div>
