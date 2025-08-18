@@ -52,6 +52,12 @@ export default function Navbar() {
           >
             COMMUNITY
           </Link>
+          <Link
+            href="/help-center"
+            className="text-sm font-medium tracking-wider hover:text-cyan-400 transition-colors"
+          >
+            Help Center
+          </Link>
         </div>
 
         <div className="hidden md:block">
